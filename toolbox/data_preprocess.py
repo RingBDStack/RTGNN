@@ -29,7 +29,7 @@ def load_data(dataset='HIV'):
 		instances_labels = np.load(prefix + '/' + dataset + '_ins_labels.npy')
 		feats_tensor = np.load(prefix + '/' + dataset + '_feat_tensor.npy')
 		weighted_adjs_tensor = np.load(prefix + '/' + dataset + '_adj_tensor.npy')
-		regions_labels = np.load(prefix + '/' + dataset + '_roi_labels.npy')
+		regions_labels = np.load(prefix + '/' + dataset + '_reg_labels.npy')
 		train_val_test_idx = np.load(prefix + '/' + dataset + '_train_val_test.npz')
 		return feats_tensor, weighted_adjs_tensor, regions_labels, instances_labels, train_val_test_idx
 	else:
@@ -106,8 +106,8 @@ def HOSVD_01(X):
 
 def load_raw_data_brain(dataset):
 	raw_data = sio.loadmat('../data/raw/' + dataset + '/' + dataset +'.mat')
-	roi_labels = raw_data['roi_labels'].squeeze()
-	np.save('../data/preprocessed/' + dataset + '/' + dataset + '_roi_labels.npy', roi_labels)
+	reg_labels = raw_data['reg_labels'].squeeze()
+	np.save('../data/preprocessed/' + dataset + '/' + dataset + '_reg_labels.npy', reg_labels)
 	ins_labels = raw_data['label'].squeeze()
 	ins_labels[ins_labels<0] = 0
 	np.save('../data/preprocessed/' + dataset + '/' + dataset + '_ins_labels.npy', ins_labels)
