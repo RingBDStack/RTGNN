@@ -50,7 +50,7 @@ def plt_hot_map(adj_tensor, dataset):
         vmin=0.0,
         xticklabels=20,
         yticklabels=20)
-    cb = h.figure.colorbar(h.collections[0])  # 显示colorbar
+    cb = h.figure.colorbar(h.collections[0])  # show colorbar
     cb.ax.tick_params(labelsize=32)
     h.set_ylim([len(adj_tensor), 0])
     h.spines['top'].set_visible(True)
@@ -115,12 +115,13 @@ def RTGNN():
     kmeans_nmi_lists = []
     kmeans_ari_lists = []
     for _ in range(args.repeat):
-        model = OneLayerRTGNN(features, weighted_adjs,
-                               args.num_views, args.instance_classes, args.node_classes, args.hidden_dim,
-                               args.dropout, args.slope,
-                               args.RL_step, args.RL_start, args.threshold_start,
-                               args.lambeda,
-                               args.inter_type, args.attn_vec_dim, args.mat2vec)
+        model = OneLayerRTGNN(args.dataset,
+                              features, weighted_adjs,
+                              args.num_views, args.instance_classes, args.node_classes, args.hidden_dim,
+                              args.dropout, args.slope,
+                              args.RL_step, args.RL_start, args.threshold_start,
+                              args.lambeda,
+                              args.inter_type, args.attn_vec_dim, args.mat2vec)
         model.to(device)
         optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
         model_stop = early_stopping(patience=args.patience, verbose=True, save_path='checkpoint/checkpoint_{}.pt'.format(args.save_postfix))
@@ -192,12 +193,32 @@ if __name__ == '__main__':
     # end = time.time()
     # print(end - start)
 
-    args.dataset = 'BP'
+    args.dataset = 'HIV'
     args.num_views = 2
     args.instance_classes = 2
     args.node_classes = 2
-    args.save_postfix = 'RTGNN_BP'
+    args.save_postfix = 'RTGNN_HIV'
     start = time.time()
     RTGNN()
     end = time.time()
     print(end-start)
+
+    # args.dataset = 'BP'
+    # args.num_views = 2
+    # args.instance_classes = 2
+    # args.node_classes = 2
+    # args.save_postfix = 'RTGNN_BP'
+    # start = time.time()
+    # RTGNN()
+    # end = time.time()
+    # print(end-start)
+
+    # args.dataset = 'PROTEINS'
+    # args.num_views = 2
+    # args.instance_classes = 2
+    # args.node_classes = 4
+    # args.save_postfix = 'RTGNN_PROTEINS'
+    # start = time.time()
+    # RTGNN()
+    # end = time.time()
+    # print(end-start)

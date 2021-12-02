@@ -110,3 +110,4 @@ if __name__ == '__main__':
     RTGNN_DBLP()
     end = time.time()
     print(end-start)
+    
