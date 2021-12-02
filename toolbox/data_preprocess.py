@@ -72,38 +72,6 @@ class index_generator:
 			np.random.shuffle(self.indices)
 		self.iter_counter = 0
 
-def HOSVD_00(X):
-	M, V, N, D = X.shape
-	A_list = []
-	for i in range(2, 4):
-		mat = tl.unfold(X, i)
-		u, _, _ = np.linalg.svd(mat)
-		A_list.append(u)
-	G = np.empty(X.shape)
-	for i in range(M):
-		for j in range(V):
-			x = X[i, j, :, :]
-			x = np.matmul(A_list[0].transpose(), x)
-			x = np.matmul(x, A_list[1])
-			G[i, j, :, :] = x
-	return G, A_list
-
-def HOSVD_01(X):
-	M, V, N, D = X.shape
-	sum_X = 0
-	for i in range(M):
-		for j in range(V):
-			x = X[i, j, :, :]
-			sum_X = sum_X + np.matmul(x, x.transpose())
-	u, _, v = np.linalg.svd(sum_X)
-	G = np.empty(X.shape)
-	for i in range(M):
-		for j in range(V):
-			x = X[i, j, :, :]
-			x = np.matmul(u.transpose(), x)
-			G[i, j, :, :] = x
-	return G, [u, v]
-
 def load_raw_data_brain(dataset):
 	raw_data = sio.loadmat('../data/raw/' + dataset + '/' + dataset +'.mat')
 	reg_labels = raw_data['reg_labels'].squeeze()
@@ -172,14 +140,14 @@ def split_train_val_test(dataset, ratio_list):
 def data_preprocess(dataset='HIV'):
 	if dataset == 'HIV' or dataset == 'BP':
 		load_raw_data_brain(dataset)
-		ratio_list = [24,6,40] if dataset == 'HIV' else [33, 8, 56]
+		ratio_list = [24, 6, 40] if dataset == 'HIV' else [33, 8, 56]
 		split_train_val_test(dataset,ratio_list)
 	elif dataset == 'BikeDC':
 		years_list = [str(year) + '/' + str(year) for year in range(2015, 2021)]
 		quarters_list = ['Q' + str(quarter) for quarter in range(1, 5)]
 		months_list = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]
 		view_list = ['weekday','weekend','month']
-		ratio_list = [24,6,42]
+		ratio_list = [24, 6, 42]
 		# load_raw_data_DC(years_list, quarters_list, months_list)
 		# get_loc_feats_DC()
 		# # optional
@@ -188,10 +156,17 @@ def data_preprocess(dataset='HIV'):
 		generate_adj_tensor_00_DC(view_list, years_list, quarters_list, months_list)
 		# label_regions_DC()
 		split_train_val_test(dataset, ratio_list)
+	elif dataset == 'PROTEINS':
+		dim_ins = 80
+		dim_node = 29
+		load_raw_data_PROTEINS(dim_ins, dim_node)
+		ratio_list = [300, 100, 600]
+		split_train_val_test(dataset, ratio_list)
 
 if __name__ == '__main__':
 	print('data processing...')
 	# data_preprocess('HIV')
 	# data_preprocess('BP')
 	# data_preprocess('BikeDC')
+	# data_preprocess('PROTEINS')
 	# The DBLP has been processed
