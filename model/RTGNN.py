@@ -5,6 +5,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class OneLayerRTGNN(nn.Module):
 	def __init__(self,
+				 dataset,
 				 features, weights,
 				 num_views, instance_classes, node_classes, hidden_dim,
 				 dropout, slope,
@@ -12,6 +13,7 @@ class OneLayerRTGNN(nn.Module):
 				 lambeda,
 				 inter_type, attn_vec_dim, mat2vec):
 		super(OneLayerRTGNN, self).__init__()
+		self.dataset = dataset
 		self.features = nn.Parameter(features, requires_grad=False)
 		self.weights = nn.Parameter(weights, requires_grad=False)
 		self.num_views = num_views
@@ -41,9 +43,10 @@ class OneLayerRTGNN(nn.Module):
 		nn.init.xavier_uniform_(self.output_fnn_concat.weight)
 		self.tanh = nn.Tanh()
 		self.loss_function = nn.CrossEntropyLoss()
-
 	def forward(self, input):
 		batch_idx, batch_labels, regions_labels, train_flag, epoch, iter, num_batchs = input
+		if self.dataset == 'PROTEINS':
+			regions_labels = regions_labels[batch_idx]
 		edge_predicts = []
 		for i in range(self.num_views):
 			edge_predict = self.tanh(self.fnns[i](self.features[batch_idx][:,i,:,:]))
@@ -83,7 +86,6 @@ class OneLayerRTGNN(nn.Module):
 					print('rewords{}'.format(rewords))
 					print('RL_rewords_log{}'.format(self.RL_rewords_log))
 		return batch_features, batch_labels, regions_labels, gnn_predicts, edge_predicts, train_flag
-
 	def loss(self, input):
 		batch_features, batch_labels, regions_labels, gnn_predicts, edge_predicts, train_flag = self.forward(input)
 		batch_labels = torch.LongTensor(batch_labels).to(device)
@@ -93,6 +95,9 @@ class OneLayerRTGNN(nn.Module):
 		if train_flag:
 			for i in range(len(edge_predicts)):
 				for j in range(len(edge_predicts[i])):
-					loss_edge += self.loss_function(edge_predicts[i][j], regions_labels)
+					if self.dataset == 'PROTEINS':
+						loss_edge += self.loss_function(edge_predicts[i][j], regions_labels[j])
+					else:
+						loss_edge += self.loss_function(edge_predicts[i][j], regions_labels)
 		return [loss_gnn,self.lambeda*loss_edge], batch_features
 

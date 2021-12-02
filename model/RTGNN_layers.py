@@ -13,7 +13,6 @@ class IntraGNN(nn.Module):
 		nn.init.xavier_uniform_(self.w_gnn)
 		self.leaky_relu = nn.LeakyReLU(slope)
 		self.dropout = nn.Dropout(dropout)
-
 	def forward(self, features, weights, edge_feats, RL_thresholds, batch_idx):
 		batch_weights = weights[torch.LongTensor(batch_idx).to(device)]
 		num_neighs = (batch_weights > 0.001) * 1
@@ -29,7 +28,6 @@ class IntraGNN(nn.Module):
 		view_features = self.leaky_relu(view_features)
 		# view_features = self.dropout(view_features)
 		return view_features, view_score
-
 
 class InterGNN(nn.Module):
 	def __init__(self,num_views, num_regions, hidden_dim,
@@ -54,7 +52,6 @@ class InterGNN(nn.Module):
 		self.softmax = nn.Softmax(dim=0)
 		self.dropout = nn.Dropout(dropout)
 		self.leaky_relu = nn.LeakyReLU(slope)
-
 	def forward(self, view_features_list):
 		if self.inter_type == 'gcn':
 			# batch_features = torch.cat([view_features.unsqueeze(0) for view_features in view_features_list], dim=0).permute(1,2,0,3)
