@@ -92,6 +92,7 @@ def filter_neighbors(batch_weights, num_neighs, edge_feats):
 	neighs[neighs < 0.001] = 0
 	adj_mat_sampled = torch.zeros(neighs.shape).to(device)
 	view_score = 0.0
+	total_num_neighs = torch.sum(num_neighs).item()
 	for i in range(M):
 		for j in range(N):
 			num_samp = num_neighs[i][j].item()
@@ -129,7 +130,7 @@ def filter_neighbors(batch_weights, num_neighs, edge_feats):
 					else:
 						adj_mat_sampled[i][j][rank_indices] = 1.
 						view_score += torch.sum(rank_socres).item()
-	view_score = view_score/(M*N)
+	view_score = view_score/total_num_neighs
 	return adj_mat_sampled, view_score
 
 def transform_matrix_vectors(matrices, mat2vec):

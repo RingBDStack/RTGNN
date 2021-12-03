@@ -35,7 +35,6 @@ class OneLayerRTGNN_DBLP(nn.Module):
 		nn.init.xavier_uniform_(self.output_fnn.weight)
 		self.tanh = nn.Tanh()
 		self.loss_function = nn.CrossEntropyLoss()
-
 	def forward(self, input):
 		batch_idx, batch_labels, train_flag, epoch, iter, num_batchs = input
 		view_features_list = []
@@ -70,7 +69,6 @@ class OneLayerRTGNN_DBLP(nn.Module):
 					print('rewords{}'.format(rewords))
 					print('RL_rewords_log{}'.format(self.RL_rewords_log))
 		return batch_features, batch_labels, gnn_predicts, gnn_predicts, train_flag
-
 	def loss(self, input):
 		batch_features, batch_labels, gnn_predicts, edge_predicts, train_flag = self.forward(input)
 		batch_labels = torch.LongTensor(batch_labels).to(device)

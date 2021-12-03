@@ -12,7 +12,6 @@ class IntraGNN(nn.Module):
 		nn.init.xavier_uniform_(self.w_trans)
 		nn.init.xavier_uniform_(self.w_gnn)
 		self.leaky_relu = nn.LeakyReLU(slope)
-
 	def forward(self, features, weights, edge_feats, RL_thresholds, batch_idx):
 		batch_weights = weights[torch.LongTensor(batch_idx).to(device)]
 		num_neighs = (batch_weights > 0) * 1
@@ -43,7 +42,6 @@ class InterGNN(nn.Module):
 		self.softmax = nn.Softmax(dim=0)
 		self.dropout = nn.Dropout(dropout)
 		self.leaky_relu = nn.LeakyReLU(slope)
-
 	def forward(self, view_features_list):
 		if self.inter_type == 'gcn':
 			batch_features = torch.cat([view_features.unsqueeze(0) for view_features in view_features_list],dim=0).permute(1, 0, 2)
@@ -58,6 +56,7 @@ def filter_neighbors(batch_weights, num_neighs, edge_feats):
 	neighs = (batch_weights > 0) * 1
 	adj_mat_sampled = torch.zeros(neighs.shape).to(device)
 	view_score = 0.0
+	total_num_neighs = torch.sum(num_neighs).item()
 	for i in range(M):
 		num_samp = num_neighs[i].item()
 		if num_samp > 0.0:
@@ -83,7 +82,7 @@ def filter_neighbors(batch_weights, num_neighs, edge_feats):
 					adj_mat_sampled[i][rank_indices] = rank_socres
 					view_score += torch.sum(rank_socres).item()
 		adj_mat_sampled[i] = adj_mat_sampled[i]/torch.max(adj_mat_sampled[i])
-	view_score = view_score/M
+	view_score = view_score/total_num_neighs
 	return adj_mat_sampled, view_score
 
 def RL_module(thresholds, RL_flags, rewords_log, view_scores_log, RL_setp):
