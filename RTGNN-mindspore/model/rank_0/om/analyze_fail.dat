@@ -1,0 +1,605 @@
+# 1.This file shows the parsed IR info when graph evaluating failed to help find the problem.
+# 2.You can search the last `------------------------>` to the node which is inferred failed.
+# 3.Refer to https://www.mindspore.cn/search?inputValue=analyze_fail.dat to get more instructions.
+# ===============================================================================
+
+# [No.1] Default_wrapper.1
+# In file RTGNN_layers.py:32/    def construct(self, features, weights, edge_feats, RL_thresholds,/
+funcgraph fg_1(
+        %para1 : Ref[Tensor(F32)][70, 90, 90]    # features
+        , %para2 : Ref[Tensor(F32)][70, 90, 90]    # weights
+        , %para3 : Ref[Tensor(F32)][4, 90, 2]    # edge_feats
+        , %para4 : Ref[Tensor(F32)][]    # RL_thresholds
+        , %para5 : Ref[Tensor(I64)][4]    # batch_idx
+        , %para6 : Ref[Tensor(F32)][64, 90]    # w_gnn
+    ) {
+
+#------------------------> 0
+    %1 = FuncGraph::fg_19(%para1, %para2, %para3, %para4, %para5)    #(Ref[Tensor(F32)][70, 90, 90], Ref[Tensor(F32)][70, 90, 90], Ref[Tensor(F32)][4, 90, 2], Ref[Tensor(F32)][], Ref[Tensor(I64)][4])    # fg_19=Default.19 #scope: Default
+#[CNode]31
+    Primitive::Return{prim_type=1}(%1)    #(Undefined) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]32
+}
+# order:
+#   1: @Default_wrapper.1:[CNode]31{[0]: ValueNode<FuncGraph> Default.19, [1]: features, [2]: weights, [3]: edge_feats, [4]: RL_thresholds, [5]: batch_idx}
+#   2: @Default_wrapper.1:[CNode]32{[0]: ValueNode<Primitive> Return, [1]: [CNode]31}
+
+
+# [No.2] Default.19
+# In file RTGNN_layers.py:32/    def construct(self, features, weights, edge_feats, RL_thresholds,/
+funcgraph fg_19[fg_1](
+        %para7 : Ref[Tensor(F32)][70, 90, 90]    # features
+        , %para8 : Ref[Tensor(F32)][70, 90, 90]    # weights
+        , %para9 : Ref[Tensor(F32)][4, 90, 2]    # edge_feats
+        , %para10 : Ref[Tensor(F32)][]    # RL_thresholds
+        , %para11 : Ref[Tensor(I64)][4]    # batch_idx
+    ) {
+    %1 : Tensor(F32)[4, 90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para8, %para11)    #(Ref[Tensor(F32)][70, 90, 90], Ref[Tensor(I64)][4]) #scope: Default
+      # In file RTGNN_layers.py:35/        batch_weights = weights[batch_idx]/#batch_weights
+    %2 : Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape) = Primitive::getattr{prim_type=1}(%1, "shape")    #(Tensor(F32)[4, 90, 90], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#[CNode]33
+    %3 : I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%2, I64(2))    #(Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#D
+    %4 : I64NoShape = Primitive::stop_gradient{prim_type=1}(%3)    #(I64NoShape) #scope: Default
+#[CNode]34
+    %5 : FuncNoShape = ClassType() #scope: Default
+      # In file RTGNN_layers.py:43/        adj_mat_sampled = ops.ZerosLike()(neighs)/#[CNode]35
+    %6 : Tensor(Bool)[4, 90, 90] = DoSignaturePrimitive::S-Prim-greater{prim_type=1}(%1, F32(0.001))    #(Tensor(F32)[4, 90, 90], F32NoShape) #scope: Default
+      # In file RTGNN_layers.py:41/        neighs = (batch_weights > 0.001) * 1/#[CNode]36
+    %7 : Tensor(I64)[4, 90, 90] = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%6, I64(1))    #(Tensor(Bool)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:41/        neighs = (batch_weights > 0.001) * 1/#neighs
+    %8 : Tensor(Bool)[4, 90, 90] = DoSignaturePrimitive::S-Prim-less{prim_type=1}(%7, F32(0.001))    #(Tensor(I64)[4, 90, 90], F32NoShape) #scope: Default
+      # In file RTGNN_layers.py:42/        neighs[neighs < 0.001] = 0/#[CNode]37
+    %9 : Tensor(I64)[4, 90, 90] = DoSignaturePrimitive::S-Prim-setitem{prim_type=1}(%7, %8, I64(0))    #(Tensor(I64)[4, 90, 90], Tensor(Bool)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:42/        neighs[neighs < 0.001] = 0/#[CNode]38
+    %10 : Tensor(I64)[4, 90, 90] = %5(%9)    #(Tensor(I64)[4, 90, 90]) #scope: Default
+      # In file RTGNN_layers.py:43/        adj_mat_sampled = ops.ZerosLike()(neighs)/#adj_mat_sampled
+
+#------------------------> 1
+    %11 = FuncGraph::fg_20(I64(0), %10, F32(0))    #(I64NoShape, Tensor(I64)[4, 90, 90], F32NoShape)    # fg_20=↵Default.20 #scope: Default
+#[CNode]39
+    %12 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%11, %4)    #(Undefined, I64NoShape) #scope: Default
+#[CNode]40
+    Primitive::Return{prim_type=1}(%12)    #(Undefined) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]41
+}
+# order:
+#   1: @Default.19:batch_weights{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: weights, [2]: batch_idx}
+#   2: @Default.19:[CNode]42{[0]: ValueNode<DoSignaturePrimitive> S-Prim-greater, [1]: batch_weights, [2]: ValueNode<FP32Imm> 0.001000}
+#   3: @Default.19:num_neighs{[0]: ValueNode<DoSignaturePrimitive> S-Prim-mul, [1]: [CNode]42, [2]: ValueNode<Int64Imm> 1}
+#   4: @Default.19:[CNode]43{[0]: ValueNode<ClassType> class 'mindspore.ops.operations.math_ops.ReduceSum'}
+#   5: @Default.19:[CNode]44{[0]: ValueNode<DoSignaturePrimitive> S-Prim-negative, [1]: ValueNode<Int64Imm> 1}
+#   6: @Default.19:num_neighs{[0]: [CNode]43, [1]: num_neighs, [2]: [CNode]44}
+#   7: @Default.19:[CNode]45{[0]: ValueNode<DoSignaturePrimitive> S-Prim-mul, [1]: num_neighs, [2]: RL_thresholds}
+#   8: @Default.19:num_neighs{[0]: ValueNode<FuncGraph> ceil.46, [1]: [CNode]45}
+#   9: @Default.19:[CNode]33{[0]: ValueNode<Primitive> getattr, [1]: batch_weights, [2]: ValueNode<StringImm> shape}
+#  10: @Default.19:M{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]33, [2]: ValueNode<Int64Imm> 0}
+#  11: @Default.19:N{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]33, [2]: ValueNode<Int64Imm> 1}
+#  12: @Default.19:D{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]33, [2]: ValueNode<Int64Imm> 2}
+#  13: @Default.19:[CNode]36{[0]: ValueNode<DoSignaturePrimitive> S-Prim-greater, [1]: batch_weights, [2]: ValueNode<FP32Imm> 0.001000}
+#  14: @Default.19:neighs{[0]: ValueNode<DoSignaturePrimitive> S-Prim-mul, [1]: [CNode]36, [2]: ValueNode<Int64Imm> 1}
+#  15: @Default.19:[CNode]37{[0]: ValueNode<DoSignaturePrimitive> S-Prim-less, [1]: neighs, [2]: ValueNode<FP32Imm> 0.001000}
+#  16: @Default.19:[CNode]38{[0]: ValueNode<DoSignaturePrimitive> S-Prim-setitem, [1]: neighs, [2]: [CNode]37, [3]: ValueNode<Int64Imm> 0}
+#  17: @Default.19:[CNode]35{[0]: ValueNode<ClassType> class 'mindspore.ops.operations.array_ops.ZerosLike'}
+#  18: @Default.19:adj_mat_sampled{[0]: [CNode]35, [1]: [CNode]38}
+#  19: @Default.19:[CNode]47{[0]: ValueNode<ClassType> class 'mindspore.ops.operations.math_ops.ReduceSum'}
+#  20: @Default.19:total_num_neighs{[0]: [CNode]47, [1]: num_neighs}
+#  21: @Default.19:[CNode]48{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_range, [1]: M}
+#  22: @Default.19:[CNode]49{[0]: ValueNode<FuncGraph> ms_len.50, [1]: [CNode]48}
+#  23: @Default.19:[CNode]41{[0]: ValueNode<Primitive> Return, [1]: [CNode]40}
+#  24: @Default.19:[CNode]39{[0]: ValueNode<FuncGraph> ↵Default.20, [1]: ValueNode<Int64Imm> 0, [2]: adj_mat_sampled, [3]: ValueNode<FP32Imm> 0.000000}
+
+
+# [No.3] ↵Default.20
+# In file RTGNN_layers.py:46/        for i in range(M):/
+funcgraph fg_20[fg_19](
+        %para12 : I64NoShape    # @[CNode]21
+        , %para13 : Tensor(I64)[4, 90, 90]    # фadj_mat_sampled
+        , %para14 : F32NoShape    # фview_score
+    ) {
+    %1 : $(Default.19):Tensor(F32)[4, 90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para8, %para11)    #(Ref[Tensor(F32)][70, 90, 90], Ref[Tensor(I64)][4]) #scope: Default
+      # In file RTGNN_layers.py:35/        batch_weights = weights[batch_idx]/#batch_weights
+    %2 : $(Default.19):Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape) = Primitive::getattr{prim_type=1}(%1, "shape")    #(Tensor(F32)[4, 90, 90], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#[CNode]33
+    %3 : $(Default.19):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%2, I64(0))    #(Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#M
+    %4 : $(Default.19):Tuple[I64*4]TupleShape(NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-make_range{prim_type=1}(%3)    #(I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]48
+    %5 : $(Default.19):I64NoShape = FuncGraph::fg_50(%4)    #(Tuple[I64*4]TupleShape(NoShape, NoShape, NoShape, NoShape))    # fg_50=ms_len.50 #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]49
+    %6 : BoolNoShape = MultitypeFuncGraph::less{(Tensor, Tensor), (Number, Tensor), (Number, Number), (Tensor, Number), (String, String)}(%para12, %5)    #(I64NoShape, I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]51
+    %7 : FuncNoShape = Primitive::Switch{prim_type=1}(%6, FuncGraph::fg_22, FuncGraph::fg_52)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_22=↻Default.22, fg_52=↓Default.52 #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]53
+
+#------------------------> 2
+    %8 = %7() #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]54
+    Primitive::Return{prim_type=1}(%8)    #(Undefined) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]55
+}
+# order:
+#   1: @↵Default.20:[CNode]51{[0]: ValueNode<MultitypeFuncGraph> less.5, [1]: @[CNode]21, [2]: [CNode]49}
+#   2: @↵Default.20:[CNode]53{[0]: ValueNode<Primitive> Switch, [1]: [CNode]51, [2]: ValueNode<FuncGraph> ↻Default.22, [3]: ValueNode<FuncGraph> ↓Default.52}
+#   3: @↵Default.20:[CNode]54{[0]: [CNode]53}
+#   4: @↵Default.20:[CNode]55{[0]: ValueNode<Primitive> Return, [1]: [CNode]54}
+
+
+# [No.4] ↻Default.22
+# In file RTGNN_layers.py:46/        for i in range(M):/
+funcgraph fg_22[fg_20](
+) {
+    %1 : I64NoShape = MultitypeFuncGraph::add{(Tensor, COOTensor), (Tensor, Tuple), (Tuple, Tensor), (Number, Tensor), (String, String), (RowTensor, Tensor), (List, Tensor), (Tensor, List), (List, List), (NoneType, NoneType), (Tensor, Tensor), (CSRTensor, CSRTensor), (Number, Number), (Tensor, Number), (Tuple, Tuple), (COOTensor, Tensor), (COOTensor, COOTensor)}(%para12, I64(1))    #(I64NoShape, I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]21
+    %2 : I64NoShape = Primitive::stop_gradient{prim_type=1}(%1)    #(I64NoShape) #scope: Default
+#[CNode]56
+
+#------------------------> 3
+    %3 = FuncGraph::fg_23(I64(0), %para13, %para14)    #(I64NoShape, Tensor(I64)[4, 90, 90], F32NoShape)    # fg_23=↵↻Default.23 #scope: Default
+#[CNode]57
+    %4 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%3, %2)    #(Undefined, I64NoShape) #scope: Default
+#[CNode]58
+    Primitive::Return{prim_type=1}(%4)    #(Undefined) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]59
+}
+# order:
+#   1: @↻Default.22:i{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]48, [2]: @[CNode]21}
+#   2: @↻Default.22:[CNode]21{[0]: ValueNode<MultitypeFuncGraph> add.12, [1]: @[CNode]21, [2]: ValueNode<Int64Imm> 1}
+#   3: @↻Default.22:[CNode]60{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_range, [1]: N}
+#   4: @↻Default.22:[CNode]61{[0]: ValueNode<FuncGraph> ms_len.50, [1]: [CNode]60}
+#   5: @↻Default.22:[CNode]59{[0]: ValueNode<Primitive> Return, [1]: [CNode]58}
+#   6: @↻Default.22:[CNode]57{[0]: ValueNode<FuncGraph> ↵↻Default.23, [1]: ValueNode<Int64Imm> 0, [2]: фadj_mat_sampled, [3]: фview_score}
+
+
+# [No.5] ↵↻Default.23
+# In file RTGNN_layers.py:47/            for j in range(N):/
+funcgraph fg_23[fg_22](
+        %para15 : I64NoShape    # @[CNode]24
+        , %para16 : Tensor(I64)[4, 90, 90]    # фadj_mat_sampled
+        , %para17 : F32NoShape    # фview_score
+    ) {
+    %1 : $(Default.19):Tensor(F32)[4, 90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para8, %para11)    #(Ref[Tensor(F32)][70, 90, 90], Ref[Tensor(I64)][4]) #scope: Default
+      # In file RTGNN_layers.py:35/        batch_weights = weights[batch_idx]/#batch_weights
+    %2 : $(Default.19):Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape) = Primitive::getattr{prim_type=1}(%1, "shape")    #(Tensor(F32)[4, 90, 90], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#[CNode]33
+    %3 : $(Default.19):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%2, I64(1))    #(Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#N
+    %4 : $(↻Default.22):Tuple[I64*90]TupleShape(NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-make_range{prim_type=1}(%3)    #(I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]60
+    %5 : $(↻Default.22):I64NoShape = FuncGraph::fg_50(%4)    #(Tuple[I64*90]TupleShape(NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape))    # fg_50=ms_len.50 #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]61
+    %6 : BoolNoShape = MultitypeFuncGraph::less{(Tensor, Tensor), (Number, Tensor), (Number, Number), (Tensor, Number), (String, String)}(%para15, %5)    #(I64NoShape, I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]62
+    %7 : FuncNoShape = Primitive::Switch{prim_type=1}(%6, FuncGraph::fg_25, FuncGraph::fg_63)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_25=↻↻Default.25, fg_63=↓↻Default.63 #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]64
+
+#------------------------> 4
+    %8 = %7() #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]65
+    Primitive::Return{prim_type=1}(%8)    #(Undefined) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]66
+}
+# order:
+#   1: @↵↻Default.23:[CNode]62{[0]: ValueNode<MultitypeFuncGraph> less.5, [1]: @[CNode]24, [2]: [CNode]61}
+#   2: @↵↻Default.23:[CNode]64{[0]: ValueNode<Primitive> Switch, [1]: [CNode]62, [2]: ValueNode<FuncGraph> ↻↻Default.25, [3]: ValueNode<FuncGraph> ↓↻Default.63}
+#   3: @↵↻Default.23:[CNode]65{[0]: [CNode]64}
+#   4: @↵↻Default.23:[CNode]66{[0]: ValueNode<Primitive> Return, [1]: [CNode]65}
+
+
+# [No.6] ↻↻Default.25
+# In file RTGNN_layers.py:47/            for j in range(N):/
+funcgraph fg_25[fg_23](
+) {
+    %1 : I64NoShape = MultitypeFuncGraph::add{(Tensor, COOTensor), (Tensor, Tuple), (Tuple, Tensor), (Number, Tensor), (String, String), (RowTensor, Tensor), (List, Tensor), (Tensor, List), (List, List), (NoneType, NoneType), (Tensor, Tensor), (CSRTensor, CSRTensor), (Number, Number), (Tensor, Number), (Tuple, Tuple), (COOTensor, Tensor), (COOTensor, COOTensor)}(%para15, I64(1))    #(I64NoShape, I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]24
+    %2 : I64NoShape = Primitive::stop_gradient{prim_type=1}(%1)    #(I64NoShape) #scope: Default
+#[CNode]67
+    %3 : $(Default.19):FuncNoShape = ClassType() #scope: Default
+      # In file RTGNN_layers.py:37/        num_neighs = ops.ReduceSum()(num_neighs, -1)/#[CNode]43
+    %4 : $(Default.19):Tensor(F32)[4, 90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para8, %para11)    #(Ref[Tensor(F32)][70, 90, 90], Ref[Tensor(I64)][4]) #scope: Default
+      # In file RTGNN_layers.py:35/        batch_weights = weights[batch_idx]/#batch_weights
+    %5 : $(Default.19):Tensor(Bool)[4, 90, 90] = DoSignaturePrimitive::S-Prim-greater{prim_type=1}(%4, F32(0.001))    #(Tensor(F32)[4, 90, 90], F32NoShape) #scope: Default
+      # In file RTGNN_layers.py:36/        num_neighs = (batch_weights > 0.001) * 1/#[CNode]42
+    %6 : $(Default.19):Tensor(I64)[4, 90, 90] = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%5, I64(1))    #(Tensor(Bool)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:36/        num_neighs = (batch_weights > 0.001) * 1/#num_neighs
+    %7 : $(Default.19):I64NoShape = DoSignaturePrimitive::S-Prim-negative{prim_type=1}(I64(1))    #(I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:37/        num_neighs = ops.ReduceSum()(num_neighs, -1)/#[CNode]44
+    %8 : $(Default.19):Tensor(I64)[4, 90] = %3(%6, %7)    #(Tensor(I64)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:37/        num_neighs = ops.ReduceSum()(num_neighs, -1)/#num_neighs
+    %9 : $(Default.19):Tensor(F32)[4, 90] = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%8, %para10)    #(Tensor(I64)[4, 90], Ref[Tensor(F32)][]) #scope: Default
+      # In file RTGNN_layers.py:39/        num_neighs = ops.ceil(num_neighs * RL_thresholds)/#[CNode]45
+    %10 : $(Default.19):Tensor(F32)[4, 90] = FuncGraph::fg_46(%9)    #(Tensor(F32)[4, 90])    # fg_46=ceil.46 #scope: Default
+      # In file RTGNN_layers.py:39/        num_neighs = ops.ceil(num_neighs * RL_thresholds)/#num_neighs
+    %11 : $(Default.19):Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape) = Primitive::getattr{prim_type=1}(%4, "shape")    #(Tensor(F32)[4, 90, 90], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#[CNode]33
+    %12 : $(Default.19):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%11, I64(0))    #(Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#M
+    %13 : $(Default.19):Tuple[I64*4]TupleShape(NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-make_range{prim_type=1}(%12)    #(I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]48
+    %14 : $(↻Default.22):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%13, %para12)    #(Tuple[I64*4]TupleShape(NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#i
+    %15 : Tensor(F32)[90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%10, %14)    #(Tensor(F32)[4, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:48/                num_samp = num_neighs[i][j]/#[CNode]68
+    %16 : $(Default.19):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%11, I64(1))    #(Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#N
+    %17 : $(↻Default.22):Tuple[I64*90]TupleShape(NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-make_range{prim_type=1}(%16)    #(I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]60
+    %18 : I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%17, %para15)    #(Tuple[I64*90]TupleShape(NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#j
+    %19 : Tensor(F32)[] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%15, %18)    #(Tensor(F32)[90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:48/                num_samp = num_neighs[i][j]/#num_samp
+    %20 : Tensor(Bool)[] = DoSignaturePrimitive::S-Prim-greater{prim_type=1}(%19, F32(0))    #(Tensor(F32)[], F32NoShape) #scope: Default
+      # In file RTGNN_layers.py:49/                if num_samp > 0.0:/#[CNode]69
+    %21 : Tensor(Bool)[] = FuncGraph::fg_11(%20)    #(Tensor(Bool)[])    # fg_11=bool_.11 #scope: Default
+      # In file RTGNN_layers.py:49/                if num_samp > 0.0:/#[CNode]70
+    %22 : FuncNoShape = Primitive::Switch{prim_type=1}(%21, FuncGraph::fg_16, FuncGraph::fg_71)    #(Tensor(Bool)[], FuncNoShape, FuncNoShape)    # fg_16=✓↻↻Default.16, fg_71=✗↻↻Default.71 #scope: Default
+      # In file RTGNN_layers.py:49/                if num_samp > 0.0:/#[CNode]72
+
+#------------------------> 5
+    %23 = %22() #scope: Default
+      # In file RTGNN_layers.py:49/                if num_samp > 0.0:/#[CNode]73
+    %24 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%23, %2)    #(Undefined, I64NoShape) #scope: Default
+#[CNode]74
+    Primitive::Return{prim_type=1}(%24)    #(Undefined) #scope: Default
+      # In file RTGNN_layers.py:49/                if num_samp > 0.0:/#[CNode]75
+}
+# order:
+#   1: @↻↻Default.25:j{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]60, [2]: @[CNode]24}
+#   2: @↻↻Default.25:[CNode]24{[0]: ValueNode<MultitypeFuncGraph> add.12, [1]: @[CNode]24, [2]: ValueNode<Int64Imm> 1}
+#   3: @↻↻Default.25:[CNode]68{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: num_neighs, [2]: i}
+#   4: @↻↻Default.25:num_samp{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]68, [2]: j}
+#   5: @↻↻Default.25:[CNode]69{[0]: ValueNode<DoSignaturePrimitive> S-Prim-greater, [1]: num_samp, [2]: ValueNode<FP32Imm> 0.000000}
+#   6: @↻↻Default.25:[CNode]70{[0]: ValueNode<FuncGraph> bool_.11, [1]: [CNode]69}
+#   7: @↻↻Default.25:[CNode]72{[0]: ValueNode<Primitive> Switch, [1]: [CNode]70, [2]: ValueNode<FuncGraph> ✓↻↻Default.16, [3]: ValueNode<FuncGraph> ✗↻↻Default.71}
+#   8: @↻↻Default.25:[CNode]73{[0]: [CNode]72}
+#   9: @↻↻Default.25:[CNode]75{[0]: ValueNode<Primitive> Return, [1]: [CNode]74}
+
+
+# [No.7] ✓↻↻Default.16
+# In file RTGNN_layers.py:49/                if num_samp > 0.0:/
+funcgraph fg_16[fg_25](
+) {
+    %1 : $(Default.19):Tensor(F32)[4, 90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para8, %para11)    #(Ref[Tensor(F32)][70, 90, 90], Ref[Tensor(I64)][4]) #scope: Default
+      # In file RTGNN_layers.py:35/        batch_weights = weights[batch_idx]/#batch_weights
+    %2 : $(Default.19):Tensor(Bool)[4, 90, 90] = DoSignaturePrimitive::S-Prim-greater{prim_type=1}(%1, F32(0.001))    #(Tensor(F32)[4, 90, 90], F32NoShape) #scope: Default
+      # In file RTGNN_layers.py:41/        neighs = (batch_weights > 0.001) * 1/#[CNode]36
+    %3 : $(Default.19):Tensor(I64)[4, 90, 90] = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%2, I64(1))    #(Tensor(Bool)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:41/        neighs = (batch_weights > 0.001) * 1/#neighs
+    %4 : $(Default.19):Tensor(Bool)[4, 90, 90] = DoSignaturePrimitive::S-Prim-less{prim_type=1}(%3, F32(0.001))    #(Tensor(I64)[4, 90, 90], F32NoShape) #scope: Default
+      # In file RTGNN_layers.py:42/        neighs[neighs < 0.001] = 0/#[CNode]37
+    %5 : $(Default.19):Tensor(I64)[4, 90, 90] = DoSignaturePrimitive::S-Prim-setitem{prim_type=1}(%3, %4, I64(0))    #(Tensor(I64)[4, 90, 90], Tensor(Bool)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:42/        neighs[neighs < 0.001] = 0/#[CNode]38
+    %6 : $(Default.19):Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape) = Primitive::getattr{prim_type=1}(%1, "shape")    #(Tensor(F32)[4, 90, 90], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#[CNode]33
+    %7 : $(Default.19):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%6, I64(0))    #(Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#M
+    %8 : $(Default.19):Tuple[I64*4]TupleShape(NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-make_range{prim_type=1}(%7)    #(I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]48
+    %9 : $(↻Default.22):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%8, %para12)    #(Tuple[I64*4]TupleShape(NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#i
+    %10 : Tensor(I64)[90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%5, %9)    #(Tensor(I64)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:50/                    neighs_idx = neighs[i][j].nonzero()/#[CNode]76
+    %11 : $(Default.19):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%6, I64(1))    #(Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#N
+    %12 : $(↻Default.22):Tuple[I64*90]TupleShape(NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-make_range{prim_type=1}(%11)    #(I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]60
+    %13 : $(↻↻Default.25):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%12, %para15)    #(Tuple[I64*90]TupleShape(NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#j
+    %14 : Tensor(I64)[90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%10, %13)    #(Tensor(I64)[90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:50/                    neighs_idx = neighs[i][j].nonzero()/#[CNode]77
+    %15 : FuncNoShape = Primitive::getattr{prim_type=1}(%14, "nonzero")    #(Tensor(I64)[90], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:50/                    neighs_idx = neighs[i][j].nonzero()/#[CNode]78
+    %16 : Tensor(I64)[-1_0^90, 1] = %15() #scope: Default
+      # In file RTGNN_layers.py:50/                    neighs_idx = neighs[i][j].nonzero()/#neighs_idx
+    %17 : Tensor(I32)[1] = FuncGraph::fg_79(%16)    #(Tensor(I64)[-1_0^90, 1])    # fg_79=print_.79 #scope: Default
+      # In file RTGNN_layers.py:51/                    print(neighs_idx)/#[CNode]80
+    %18 : Tensor(I32)[1] = Primitive::stop_gradient{prim_type=1}(%17)    #(Tensor(I32)[1]) #scope: Default
+#[CNode]81
+    %19 : Tuple[I64*2]TupleShape(NoShape, NoShape) = Primitive::getattr{prim_type=1}(%16, "shape")    #(Tensor(I64)[-1_0^90, 1], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:54/                    if neighs_idx.shape == (0, 1):/#[CNode]82
+    %20 : Tuple[I64*2]TupleShape(NoShape, NoShape) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(I64(0), I64(1))    #(I64NoShape, I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:54/                    if neighs_idx.shape == (0, 1):/#[CNode]83
+    %21 : BoolNoShape = DoSignaturePrimitive::S-Prim-equal{prim_type=1}(%19, %20)    #(Tuple[I64*2]TupleShape(NoShape, NoShape), Tuple[I64*2]TupleShape(NoShape, NoShape)) #scope: Default
+      # In file RTGNN_layers.py:54/                    if neighs_idx.shape == (0, 1):/#[CNode]84
+    %22 : BoolNoShape = FuncGraph::fg_11(%21)    #(BoolNoShape)    # fg_11=bool_.11 #scope: Default
+      # In file RTGNN_layers.py:54/                    if neighs_idx.shape == (0, 1):/#[CNode]85
+    %23 : FuncNoShape = Primitive::Switch{prim_type=1}(%22, FuncGraph::fg_86, FuncGraph::fg_26)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_86=✓✓↻↻Default.86, fg_26=✗✓↻↻Default.26 #scope: Default
+      # In file RTGNN_layers.py:54/                    if neighs_idx.shape == (0, 1):/#[CNode]87
+
+#------------------------> 6
+    %24 = %23() #scope: Default
+      # In file RTGNN_layers.py:54/                    if neighs_idx.shape == (0, 1):/#[CNode]88
+    %25 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%24, %18)    #(Undefined, Tensor(I32)[1]) #scope: Default
+#[CNode]89
+    Primitive::Return{prim_type=1}(%25)    #(Undefined) #scope: Default
+      # In file RTGNN_layers.py:54/                    if neighs_idx.shape == (0, 1):/#[CNode]90
+}
+# order:
+#   1: @✓↻↻Default.16:[CNode]76{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]38, [2]: i}
+#   2: @✓↻↻Default.16:[CNode]77{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]76, [2]: j}
+#   3: @✓↻↻Default.16:[CNode]78{[0]: ValueNode<Primitive> getattr, [1]: [CNode]77, [2]: ValueNode<StringImm> nonzero}
+#   4: @✓↻↻Default.16:neighs_idx{[0]: [CNode]78}
+#   5: @✓↻↻Default.16:[CNode]80{[0]: ValueNode<FuncGraph> print_.79, [1]: neighs_idx}
+#   6: @✓↻↻Default.16:[CNode]91{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: ValueNode<StringImm> axis, [2]: ValueNode<StringImm> p}
+#   7: @✓↻↻Default.16:[CNode]92{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: ValueNode<Int64Imm> 1, [2]: ValueNode<Int64Imm> 2}
+#   8: @✓↻↻Default.16:[CNode]93{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_dict, [1]: [CNode]91, [2]: [CNode]92}
+#   9: @✓↻↻Default.16:norm_ops{[0]: ValueNode<UnpackCall> unpack_call.94, [1]: ValueNode<ClassType> class 'mindspore.ops.operations.math_ops.LpNorm', [2]: [CNode]93}
+#  10: @✓↻↻Default.16:[CNode]82{[0]: ValueNode<Primitive> getattr, [1]: neighs_idx, [2]: ValueNode<StringImm> shape}
+#  11: @✓↻↻Default.16:[CNode]83{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: ValueNode<Int64Imm> 0, [2]: ValueNode<Int64Imm> 1}
+#  12: @✓↻↻Default.16:[CNode]84{[0]: ValueNode<DoSignaturePrimitive> S-Prim-equal, [1]: [CNode]82, [2]: [CNode]83}
+#  13: @✓↻↻Default.16:[CNode]85{[0]: ValueNode<FuncGraph> bool_.11, [1]: [CNode]84}
+#  14: @✓↻↻Default.16:[CNode]87{[0]: ValueNode<Primitive> Switch, [1]: [CNode]85, [2]: ValueNode<FuncGraph> ✓✓↻↻Default.86, [3]: ValueNode<FuncGraph> ✗✓↻↻Default.26}
+#  15: @✓↻↻Default.16:[CNode]88{[0]: [CNode]87}
+#  16: @✓↻↻Default.16:[CNode]90{[0]: ValueNode<Primitive> Return, [1]: [CNode]89}
+
+
+# [No.8] ✗✓↻↻Default.26
+# In file RTGNN_layers.py:54/                    if neighs_idx.shape == (0, 1):/
+funcgraph fg_26[fg_16](
+) {
+    %1 : FuncNoShape = ClassType() #scope: Default
+      # In file RTGNN_layers.py:65/                        index, max_distance = ops.ArgMaxWithValue()(distance)/#[CNode]95
+    %2 : $(✓↻↻Default.16):Tuple[String*2]TupleShape(NoShape, NoShape) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}("axis", "p")    #(StringNoShape, StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:52/                    norm_ops = ops.LpNorm(axis=1, p=2)/#[CNode]91
+    %3 : $(✓↻↻Default.16):Tuple[I64*2]TupleShape(NoShape, NoShape) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(I64(1), I64(2))    #(I64NoShape, I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:52/                    norm_ops = ops.LpNorm(axis=1, p=2)/#[CNode]92
+    %4 : $(✓↻↻Default.16):Dictionary[[axis,p,],[Int64*2]]NoShape = DoSignaturePrimitive::S-Prim-make_dict{prim_type=1}(%2, %3)    #(Tuple[String*2]TupleShape(NoShape, NoShape), Tuple[I64*2]TupleShape(NoShape, NoShape)) #scope: Default
+      # In file RTGNN_layers.py:52/                    norm_ops = ops.LpNorm(axis=1, p=2)/#[CNode]93
+    %5 : $(✓↻↻Default.16):FuncNoShape = UnpackCall::unpack_call(ClassType, %4)    #(FuncNoShape, Dictionary[[axis,p,],[Int64*2]]NoShape) #scope: Default
+      # In file RTGNN_layers.py:52/                    norm_ops = ops.LpNorm(axis=1, p=2)/#norm_ops
+    %6 : $(Default.19):Tensor(F32)[4, 90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para8, %para11)    #(Ref[Tensor(F32)][70, 90, 90], Ref[Tensor(I64)][4]) #scope: Default
+      # In file RTGNN_layers.py:35/        batch_weights = weights[batch_idx]/#batch_weights
+    %7 : $(Default.19):Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape) = Primitive::getattr{prim_type=1}(%6, "shape")    #(Tensor(F32)[4, 90, 90], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#[CNode]33
+    %8 : $(Default.19):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%7, I64(0))    #(Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#M
+    %9 : $(Default.19):Tuple[I64*4]TupleShape(NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-make_range{prim_type=1}(%8)    #(I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#[CNode]48
+    %10 : $(↻Default.22):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%9, %para12)    #(Tuple[I64*4]TupleShape(NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:46/        for i in range(M):/#i
+    %11 : Tensor(F32)[90, 2] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para9, %10)    #(Ref[Tensor(F32)][4, 90, 2], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:58/                        neighs_feats = edge_feats[i][neighs_idx]/#[CNode]96
+    %12 : $(Default.19):Tensor(Bool)[4, 90, 90] = DoSignaturePrimitive::S-Prim-greater{prim_type=1}(%6, F32(0.001))    #(Tensor(F32)[4, 90, 90], F32NoShape) #scope: Default
+      # In file RTGNN_layers.py:41/        neighs = (batch_weights > 0.001) * 1/#[CNode]36
+    %13 : $(Default.19):Tensor(I64)[4, 90, 90] = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%12, I64(1))    #(Tensor(Bool)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:41/        neighs = (batch_weights > 0.001) * 1/#neighs
+    %14 : $(Default.19):Tensor(Bool)[4, 90, 90] = DoSignaturePrimitive::S-Prim-less{prim_type=1}(%13, F32(0.001))    #(Tensor(I64)[4, 90, 90], F32NoShape) #scope: Default
+      # In file RTGNN_layers.py:42/        neighs[neighs < 0.001] = 0/#[CNode]37
+    %15 : $(Default.19):Tensor(I64)[4, 90, 90] = DoSignaturePrimitive::S-Prim-setitem{prim_type=1}(%13, %14, I64(0))    #(Tensor(I64)[4, 90, 90], Tensor(Bool)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:42/        neighs[neighs < 0.001] = 0/#[CNode]38
+    %16 : $(✓↻↻Default.16):Tensor(I64)[90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%15, %10)    #(Tensor(I64)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:50/                    neighs_idx = neighs[i][j].nonzero()/#[CNode]76
+    %17 : $(Default.19):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%7, I64(1))    #(Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:40/        M, N, D = batch_weights.shape/#N
+    %18 : $(↻Default.22):Tuple[I64*90]TupleShape(NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-make_range{prim_type=1}(%17)    #(I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#[CNode]60
+    %19 : $(↻↻Default.25):I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%18, %para15)    #(Tuple[I64*90]TupleShape(NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:47/            for j in range(N):/#j
+    %20 : $(✓↻↻Default.16):Tensor(I64)[90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%16, %19)    #(Tensor(I64)[90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:50/                    neighs_idx = neighs[i][j].nonzero()/#[CNode]77
+    %21 : $(✓↻↻Default.16):FuncNoShape = Primitive::getattr{prim_type=1}(%20, "nonzero")    #(Tensor(I64)[90], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:50/                    neighs_idx = neighs[i][j].nonzero()/#[CNode]78
+    %22 : $(✓↻↻Default.16):Tensor(I64)[-1_0^90, 1] = %21() #scope: Default
+      # In file RTGNN_layers.py:50/                    neighs_idx = neighs[i][j].nonzero()/#neighs_idx
+    %23 : FuncNoShape = Primitive::getattr{prim_type=1}(%22, "squeeze")    #(Tensor(I64)[-1_0^90, 1], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:57/                        neighs_idx = neighs_idx.squeeze()/#[CNode]97
+    %24 : Tensor(I64)[-1] = %23() #scope: Default
+      # In file RTGNN_layers.py:57/                        neighs_idx = neighs_idx.squeeze()/#neighs_idx
+    %25 : Tensor(F32)[-1, 2] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%11, %24)    #(Tensor(F32)[90, 2], Tensor(I64)[-1]) #scope: Default
+      # In file RTGNN_layers.py:58/                        neighs_feats = edge_feats[i][neighs_idx]/#neighs_feats
+    %26 : FuncNoShape = ClassType() #scope: Default
+      # In file RTGNN_layers.py:61/                        center_feats = ops.ExpandDims()(center_feats, 0)/#[CNode]98
+    %27 : Tensor(F32)[90, 2] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para9, %10)    #(Ref[Tensor(F32)][4, 90, 2], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:60/                        center_feats = edge_feats[i][j]/#[CNode]99
+    %28 : Tensor(F32)[2] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%27, %19)    #(Tensor(F32)[90, 2], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:60/                        center_feats = edge_feats[i][j]/#center_feats
+    %29 : Tensor(F32)[1, 2] = %26(%28, I64(0))    #(Tensor(F32)[2], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:61/                        center_feats = ops.ExpandDims()(center_feats, 0)/#center_feats
+    %30 : Tuple[I64*2]TupleShape(NoShape, NoShape) = Primitive::getattr{prim_type=1}(%25, "shape")    #(Tensor(F32)[-1, 2], StringNoShape) #scope: Default
+      # In file RTGNN_layers.py:63/                            center_feats, (neighs_feats.shape[0], 1))/#[CNode]100
+    %31 : I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%30, I64(0))    #(Tuple[I64*2]TupleShape(NoShape, NoShape), I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:63/                            center_feats, (neighs_feats.shape[0], 1))/#[CNode]101
+    %32 : Tuple[I64*2]TupleShape(NoShape, NoShape) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(%31, I64(1))    #(I64NoShape, I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:63/                            center_feats, (neighs_feats.shape[0], 1))/#[CNode]102
+
+#------------------------> 7
+    %33 = FuncGraph::fg_27(%29, %32)    #(Tensor(F32)[1, 2], Tuple[I64*2]TupleShape(NoShape, NoShape))    # fg_27=tile.27 #scope: Default
+      # In file RTGNN_layers.py:62/                        center_feats = mindspore.numpy.tile(/#center_feats
+    %34 = DoSignaturePrimitive::S-Prim-sub{prim_type=1}(%25, %33)    #(Tensor(F32)[-1, 2], Undefined) #scope: Default
+      # In file RTGNN_layers.py:64/                        distance = norm_ops(neighs_feats - center_feats)/#[CNode]103
+    %35 = %5(%34)    #(Undefined) #scope: Default
+      # In file RTGNN_layers.py:64/                        distance = norm_ops(neighs_feats - center_feats)/#distance
+    %36 = %1(%35)    #(Undefined) #scope: Default
+      # In file RTGNN_layers.py:65/                        index, max_distance = ops.ArgMaxWithValue()(distance)/#[CNode]104
+    %37 = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%36, I64(0))    #(Undefined, Undefined) #scope: Default
+      # In file RTGNN_layers.py:65/                        index, max_distance = ops.ArgMaxWithValue()(distance)/#index
+    %38 = Primitive::stop_gradient{prim_type=1}(%37)    #(Undefined) #scope: Default
+#[CNode]105
+    %39 = FuncGraph::fg_106()    # fg_106=G-✗✓↻↻Default.106 #scope: Default
+      # In file RTGNN_layers.py:72/                        rank_indices = [/#rank_indices
+    %40 = FuncGraph::fg_50(%39)    #(Undefined)    # fg_50=ms_len.50 #scope: Default
+      # In file RTGNN_layers.py:75/                        if len(rank_indices) > num_samp:/#[CNode]107
+    %41 : $(Default.19):FuncNoShape = ClassType() #scope: Default
+      # In file RTGNN_layers.py:37/        num_neighs = ops.ReduceSum()(num_neighs, -1)/#[CNode]43
+    %42 : $(Default.19):Tensor(Bool)[4, 90, 90] = DoSignaturePrimitive::S-Prim-greater{prim_type=1}(%6, F32(0.001))    #(Tensor(F32)[4, 90, 90], F32NoShape) #scope: Default
+      # In file RTGNN_layers.py:36/        num_neighs = (batch_weights > 0.001) * 1/#[CNode]42
+    %43 : $(Default.19):Tensor(I64)[4, 90, 90] = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%42, I64(1))    #(Tensor(Bool)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:36/        num_neighs = (batch_weights > 0.001) * 1/#num_neighs
+    %44 : $(Default.19):I64NoShape = DoSignaturePrimitive::S-Prim-negative{prim_type=1}(I64(1))    #(I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:37/        num_neighs = ops.ReduceSum()(num_neighs, -1)/#[CNode]44
+    %45 : $(Default.19):Tensor(I64)[4, 90] = %41(%43, %44)    #(Tensor(I64)[4, 90, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:37/        num_neighs = ops.ReduceSum()(num_neighs, -1)/#num_neighs
+    %46 : $(Default.19):Tensor(F32)[4, 90] = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%45, %para10)    #(Tensor(I64)[4, 90], Ref[Tensor(F32)][]) #scope: Default
+      # In file RTGNN_layers.py:39/        num_neighs = ops.ceil(num_neighs * RL_thresholds)/#[CNode]45
+    %47 : $(Default.19):Tensor(F32)[4, 90] = FuncGraph::fg_46(%46)    #(Tensor(F32)[4, 90])    # fg_46=ceil.46 #scope: Default
+      # In file RTGNN_layers.py:39/        num_neighs = ops.ceil(num_neighs * RL_thresholds)/#num_neighs
+    %48 : $(↻↻Default.25):Tensor(F32)[90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%47, %10)    #(Tensor(F32)[4, 90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:48/                num_samp = num_neighs[i][j]/#[CNode]68
+    %49 : $(↻↻Default.25):Tensor(F32)[] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%48, %19)    #(Tensor(F32)[90], I64NoShape) #scope: Default
+      # In file RTGNN_layers.py:48/                num_samp = num_neighs[i][j]/#num_samp
+    %50 = DoSignaturePrimitive::S-Prim-greater{prim_type=1}(%40, %49)    #(Undefined, Tensor(F32)[]) #scope: Default
+      # In file RTGNN_layers.py:75/                        if len(rank_indices) > num_samp:/#[CNode]108
+    %51 = FuncGraph::fg_11(%50)    #(Undefined)    # fg_11=bool_.11 #scope: Default
+      # In file RTGNN_layers.py:75/                        if len(rank_indices) > num_samp:/#[CNode]109
+    %52 = Primitive::Switch{prim_type=1}(%51, FuncGraph::fg_110, FuncGraph::fg_111)    #(Undefined, Undefined, Undefined)    # fg_110=✓✗✓↻↻Default.110, fg_111=✗✗✓↻↻Default.111 #scope: Default
+      # In file RTGNN_layers.py:75/                        if len(rank_indices) > num_samp:/#[CNode]112
+    %53 = %52() #scope: Default
+      # In file RTGNN_layers.py:75/                        if len(rank_indices) > num_samp:/#[CNode]113
+    %54 = Primitive::TupleGetItem{prim_type=1}(%53, I64(0))    #(Undefined, Undefined) #scope: Default
+#[CNode]114
+    %55 = Primitive::TupleGetItem{prim_type=1}(%53, I64(1))    #(Undefined, Undefined) #scope: Default
+#[CNode]115
+    %56 = FuncGraph::fg_116(%54, %55)    #(Undefined, Undefined)    # fg_116=↓✗✓↻↻Default.116 #scope: Default
+#[CNode]117
+    %57 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%56, %38)    #(Undefined, Undefined) #scope: Default
+#[CNode]118
+    Primitive::Return{prim_type=1}(%57)    #(Undefined) #scope: Default
+      # In file RTGNN_layers.py:75/                        if len(rank_indices) > num_samp:/#[CNode]119
+}
+# order:
+#   1: @✗✓↻↻Default.26:[CNode]97{[0]: ValueNode<Primitive> getattr, [1]: neighs_idx, [2]: ValueNode<StringImm> squeeze}
+#   2: @✗✓↻↻Default.26:neighs_idx{[0]: [CNode]97}
+#   3: @✗✓↻↻Default.26:[CNode]96{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: edge_feats, [2]: i}
+#   4: @✗✓↻↻Default.26:neighs_feats{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]96, [2]: neighs_idx}
+#   5: @✗✓↻↻Default.26:[CNode]99{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: edge_feats, [2]: i}
+#   6: @✗✓↻↻Default.26:center_feats{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]99, [2]: j}
+#   7: @✗✓↻↻Default.26:[CNode]98{[0]: ValueNode<ClassType> class 'mindspore.ops.operations.array_ops.ExpandDims'}
+#   8: @✗✓↻↻Default.26:center_feats{[0]: [CNode]98, [1]: center_feats, [2]: ValueNode<Int64Imm> 0}
+#   9: @✗✓↻↻Default.26:[CNode]100{[0]: ValueNode<Primitive> getattr, [1]: neighs_feats, [2]: ValueNode<StringImm> shape}
+#  10: @✗✓↻↻Default.26:[CNode]101{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]100, [2]: ValueNode<Int64Imm> 0}
+#  11: @✗✓↻↻Default.26:[CNode]102{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: [CNode]101, [2]: ValueNode<Int64Imm> 1}
+#  12: @✗✓↻↻Default.26:center_feats{[0]: ValueNode<FuncGraph> tile.27, [1]: center_feats, [2]: [CNode]102}
+#  13: @✗✓↻↻Default.26:[CNode]103{[0]: ValueNode<DoSignaturePrimitive> S-Prim-sub, [1]: neighs_feats, [2]: center_feats}
+#  14: @✗✓↻↻Default.26:distance{[0]: norm_ops, [1]: [CNode]103}
+#  15: @✗✓↻↻Default.26:[CNode]95{[0]: ValueNode<ClassType> class 'mindspore.ops.operations.array_ops.ArgMaxWithValue'}
+#  16: @✗✓↻↻Default.26:[CNode]104{[0]: [CNode]95, [1]: distance}
+#  17: @✗✓↻↻Default.26:index{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]104, [2]: ValueNode<Int64Imm> 0}
+#  18: @✗✓↻↻Default.26:max_distance{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]104, [2]: ValueNode<Int64Imm> 1}
+#  19: @✗✓↻↻Default.26:distance{[0]: ValueNode<DoSignaturePrimitive> S-Prim-div, [1]: distance, [2]: max_distance}
+#  20: @✗✓↻↻Default.26:[CNode]120{[0]: ValueNode<Primitive> getattr, [1]: distance, [2]: ValueNode<StringImm> shape}
+#  21: @✗✓↻↻Default.26:[CNode]121{[0]: ValueNode<FuncGraph> ones.122, [1]: [CNode]120, [2]: ValueNode<Float> Float32}
+#  22: @✗✓↻↻Default.26:con_import{[0]: ValueNode<DoSignaturePrimitive> S-Prim-sub, [1]: [CNode]121, [2]: distance}
+#  23: @✗✓↻↻Default.26:[CNode]123{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: ValueNode<StringImm> descending}
+#  24: @✗✓↻↻Default.26:[CNode]124{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: ValueNode<BoolImm> false}
+#  25: @✗✓↻↻Default.26:[CNode]125{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_dict, [1]: [CNode]123, [2]: [CNode]124}
+#  26: @✗✓↻↻Default.26:[CNode]126{[0]: ValueNode<UnpackCall> unpack_call.127, [1]: ValueNode<ClassType> class 'mindspore.ops.operations.array_ops.Sort', [2]: [CNode]125}
+#  27: @✗✓↻↻Default.26:[CNode]128{[0]: [CNode]126, [1]: con_import}
+#  28: @✗✓↻↻Default.26:rank_socres{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]128, [2]: ValueNode<Int64Imm> 0}
+#  29: @✗✓↻↻Default.26:rank_indices{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]128, [2]: ValueNode<Int64Imm> 1}
+#  30: @✗✓↻↻Default.26:rank_indices{[0]: ValueNode<FuncGraph> G-✗✓↻↻Default.106}
+#  31: @✗✓↻↻Default.26:[CNode]107{[0]: ValueNode<FuncGraph> ms_len.50, [1]: rank_indices}
+#  32: @✗✓↻↻Default.26:[CNode]108{[0]: ValueNode<DoSignaturePrimitive> S-Prim-greater, [1]: [CNode]107, [2]: num_samp}
+#  33: @✗✓↻↻Default.26:[CNode]109{[0]: ValueNode<FuncGraph> bool_.11, [1]: [CNode]108}
+#  34: @✗✓↻↻Default.26:[CNode]112{[0]: ValueNode<Primitive> Switch, [1]: [CNode]109, [2]: ValueNode<FuncGraph> ✓✗✓↻↻Default.110, [3]: ValueNode<FuncGraph> ✗✗✓↻↻Default.111}
+#  35: @✗✓↻↻Default.26:[CNode]113{[0]: [CNode]112}
+#  36: @✗✓↻↻Default.26:[CNode]117{[0]: ValueNode<FuncGraph> ↓✗✓↻↻Default.116, [1]: [CNode]114, [2]: [CNode]115}
+#  37: @✗✓↻↻Default.26:[CNode]118{[0]: ValueNode<Primitive> Depend, [1]: [CNode]117, [2]: [CNode]105}
+#  38: @✗✓↻↻Default.26:[CNode]119{[0]: ValueNode<Primitive> Return, [1]: [CNode]118}
+#  39: @✗✓↻↻Default.26:[CNode]114{[0]: ValueNode<Primitive> TupleGetItem, [1]: [CNode]113, [2]: ValueNode<Int64Imm> 0}
+#  40: @✗✓↻↻Default.26:[CNode]115{[0]: ValueNode<Primitive> TupleGetItem, [1]: [CNode]113, [2]: ValueNode<Int64Imm> 1}
+
+
+# [No.9] tile.27
+# In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1198/def tile(a, reps):/
+funcgraph fg_27(
+        %para18 : Tensor(F32)[1, 2]    # a
+        , %para19 : Tuple[I64*2]TupleShape(NoShape, NoShape)    # reps
+    ) {
+    %1 : BoolNoShape = FuncGraph::fg_129(%para18)    #(Tensor(F32)[1, 2])    # fg_129=_check_input_tensor.129 #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1239/    _check_input_tensor(a)/#[CNode]130
+    %2 : BoolNoShape = Primitive::stop_gradient{prim_type=1}(%1)    #(BoolNoShape) #scope: Default
+      # In file RTGNN_layers.py:62/                        center_feats = mindspore.numpy.tile(/#[CNode]131
+    %3 : Tuple[I64*2]TupleShape(NoShape, NoShape) = FuncGraph::fg_132(%para18)    #(Tensor(F32)[1, 2])    # fg_132=shape.132 #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1241/    shape = F.shape(a)/#shape
+    %4 : BoolNoShape = DoSignaturePrimitive::S-Prim-_is_shape_empty{prim_type=1}(%3)    #(Tuple[I64*2]TupleShape(NoShape, NoShape)) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/#[CNode]133
+    %5 : BoolNoShape = FuncGraph::fg_11(%4)    #(BoolNoShape)    # fg_11=bool_.11 #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/#[CNode]134
+    %6 : FuncNoShape = Primitive::Switch{prim_type=1}(%5, FuncGraph::fg_135, FuncGraph::fg_136)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_135=↰tile.135, fg_136=↱tile.136 #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/#[CNode]137
+    %7 : BoolNoShape = %6() #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/#[CNode]138
+    %8 : BoolNoShape = FuncGraph::fg_11(%7)    #(BoolNoShape)    # fg_11=bool_.11 #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/#[CNode]139
+    %9 : FuncNoShape = Primitive::Switch{prim_type=1}(%8, FuncGraph::fg_140, FuncGraph::fg_28)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_140=✓tile.140, fg_28=✗tile.28 #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/#[CNode]141
+
+#------------------------> 8
+    %10 = %9() #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/#[CNode]142
+    %11 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%10, %2)    #(Undefined, BoolNoShape) #scope: Default
+      # In file RTGNN_layers.py:62/                        center_feats = mindspore.numpy.tile(/#[CNode]143
+    Primitive::Return{prim_type=1}(%11)    #(Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/#[CNode]144
+}
+# order:
+#   1: @tile.27:[CNode]130{[0]: ValueNode<FuncGraph> _check_input_tensor.129, [1]: a}
+#   2: @tile.27:ndim{[0]: ValueNode<FuncGraph> rank.145, [1]: a}
+#   3: @tile.27:shape{[0]: ValueNode<FuncGraph> shape.132, [1]: a}
+#   4: @tile.27:reps{[0]: ValueNode<DoSignaturePrimitive> S-Prim-_add_unit_axes, [1]: reps, [2]: ndim}
+#   5: @tile.27:[CNode]133{[0]: ValueNode<DoSignaturePrimitive> S-Prim-_is_shape_empty, [1]: shape}
+#   6: @tile.27:[CNode]134{[0]: ValueNode<FuncGraph> bool_.11, [1]: [CNode]133}
+#   7: @tile.27:[CNode]137{[0]: ValueNode<Primitive> Switch, [1]: [CNode]134, [2]: ValueNode<FuncGraph> ↰tile.135, [3]: ValueNode<FuncGraph> ↱tile.136}
+#   8: @tile.27:[CNode]138{[0]: [CNode]137}
+#   9: @tile.27:[CNode]139{[0]: ValueNode<FuncGraph> bool_.11, [1]: [CNode]138}
+#  10: @tile.27:[CNode]141{[0]: ValueNode<Primitive> Switch, [1]: [CNode]139, [2]: ValueNode<FuncGraph> ✓tile.140, [3]: ValueNode<FuncGraph> ✗tile.28}
+#  11: @tile.27:[CNode]142{[0]: [CNode]141}
+#  12: @tile.27:[CNode]144{[0]: ValueNode<Primitive> Return, [1]: [CNode]143}
+
+
+# [No.10] ✗tile.28
+# In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/
+funcgraph fg_28[fg_27](
+) {
+
+#------------------------> 9
+    %1 = FuncGraph::fg_29()    # fg_29=↓tile.29 #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/#[CNode]146
+    Primitive::Return{prim_type=1}(%1)    #(Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/#[CNode]147
+}
+# order:
+#   1: @✗tile.28:[CNode]146{[0]: ValueNode<FuncGraph> ↓tile.29}
+#   2: @✗tile.28:[CNode]147{[0]: ValueNode<Primitive> Return, [1]: [CNode]146}
+
+
+# [No.11] ↓tile.29
+# In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1243/    if _is_shape_empty(shape) or _is_shape_empty(reps):/
+funcgraph fg_29[fg_27](
+) {
+    %1 : $(tile.27):I64NoShape = FuncGraph::fg_145(%para18)    #(Tensor(F32)[1, 2])    # fg_145=rank.145 #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1240/    ndim = F.rank(a)/#ndim
+    %2 : $(tile.27):Tuple[I64*2]TupleShape(NoShape, NoShape) = DoSignaturePrimitive::S-Prim-_add_unit_axes{prim_type=1}(%para19, %1)    #(Tuple[I64*2]TupleShape(NoShape, NoShape), I64NoShape) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1242/    reps = _add_unit_axes(reps, ndim)/#reps
+
+#------------------------> 10
+    %3 = FuncGraph::fg_30(%para18, %2)    #(Tensor(F32)[1, 2], Tuple[I64*2]TupleShape(NoShape, NoShape))    # fg_30=tile.30 #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1246/    return F.tile(a, reps)/#[CNode]148
+    Primitive::Return{prim_type=1}(%3)    #(Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/numpy/array_ops.py:1246/    return F.tile(a, reps)/#[CNode]149
+}
+# order:
+#   1: @↓tile.29:[CNode]148{[0]: ValueNode<FuncGraph> tile.30, [1]: a, [2]: reps}
+#   2: @↓tile.29:[CNode]149{[0]: ValueNode<Primitive> Return, [1]: [CNode]148}
+
+
+# [No.12] tile.30
+# In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/function/array_func.py:415/def tile(input_x, multiples):/
+funcgraph fg_30(
+        %para20 : Tensor(F32)[1, 2]    # input_x
+        , %para21 : Tuple[I64*2]TupleShape(NoShape, NoShape)    # multiples
+    ) {
+
+#------------------------> 11
+    %1 = DoSignaturePrimitive::S-Prim-Tile{prim_type=1}[output_names=["output"], input_names=["x", "multiples"]](%para20, %para21)    #(Tensor(F32)[1, 2], Tuple[I64*2]TupleShape(NoShape, NoShape)) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/function/array_func.py:479/    return tile_(input_x, multiples)/#[CNode]150
+    Primitive::Return{prim_type=1}(%1)    #(Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/function/array_func.py:479/    return tile_(input_x, multiples)/#[CNode]151
+}
+# order:
+#   1: @tile.30:[CNode]150{[0]: ValueNode<DoSignaturePrimitive> S-Prim-Tile, [1]: input_x, [2]: multiples}
+#   2: @tile.30:[CNode]151{[0]: ValueNode<Primitive> Return, [1]: [CNode]150}
+
+
+#===============================================================================
+# num of function graphs in stack: 12/13 (Ignored 1 internal frames).

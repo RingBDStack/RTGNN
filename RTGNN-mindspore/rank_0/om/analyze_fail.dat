@@ -1,0 +1,654 @@
+# 1.This file shows the parsed IR info when graph evaluating failed to help find the problem.
+# 2.You can search the last `------------------------>` to the node which is inferred failed.
+# 3.Refer to https://www.mindspore.cn/search?inputValue=analyze_fail.dat to get more instructions.
+# ===============================================================================
+
+# [No.1] after_grad.75556
+# In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:523/                    def after_grad(*args):/
+funcgraph fg_75556(
+        %para1 : Tensor(I32)[4]    # args0
+        , %para2 : Tensor(I32)[4]    # args1
+        , %para3 : Tensor(I32)[90]    # args2
+        , %para4 : BoolNoShape    # args3
+        , %para5 : I64NoShape    # args4
+        , %para6 : I64NoShape    # args5
+        , %para7 : I64NoShape    # args6
+        , %para8 : Ref[Tensor(F32)][2, 90]    # 0.weight
+        , %para9 : Ref[Tensor(F32)][2]    # 0.bias
+        , %para10 : Ref[Tensor(F32)][2, 90]    # 1.weight
+        , %para11 : Ref[Tensor(F32)][2]    # 1.bias
+        , %para12 : Ref[Tensor(F32)][90, 90]    # 0.w_trans
+        , %para13 : Ref[Tensor(F32)][90, 64]    # 0.w_gnn
+        , %para14 : Ref[Tensor(F32)][90, 90]    # 1.w_trans
+        , %para15 : Ref[Tensor(F32)][90, 64]    # 1.w_gnn
+        , %para16 : Ref[Tensor(F32)][2, 2]    # inter_gnn.adj_gcn
+        , %para17 : Ref[Tensor(F32)][64, 64]    # inter_gnn.w_gcn
+        , %para18 : Ref[Tensor(F32)][128, 5760]    # inter_gnn.w_gnn_concat.weight
+        , %para19 : Ref[Tensor(F32)][128]    # inter_gnn.w_gnn_concat.bias
+        , %para20 : Ref[Tensor(F32)][128, 64]    # inter_gnn.w_gnn.weight
+        , %para21 : Ref[Tensor(F32)][128]    # inter_gnn.w_gnn.bias
+        , %para22 : Ref[Tensor(F32)][1, 128]    # inter_gnn.vec_gnn.weight
+        , %para23 : Ref[Tensor(F32)][2, 64]    # output_fnn.weight
+        , %para24 : Ref[Tensor(F32)][2]    # output_fnn.bias
+        , %para25 : Ref[Tensor(F32)][2, 5760]    # output_fnn_concat.weight
+        , %para26 : Ref[Tensor(F32)][2]    # output_fnn_concat.bias
+        , %para27 : Ref[Tensor(F32)][70, 2, 90, 90]    # features
+        , %para28 : Ref[Tensor(F32)][70, 2, 90, 90]    # weights
+        , %para29 : Ref[Tensor(F32)][2]    # RL_thresholds
+        , %para30 : Ref[Tensor(F32)][2]    # RL_epoch_socres
+    ) {
+    %1 : Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape) = Primitive::MakeTuple{prim_type=1}(%para1, %para2, %para3, %para4, %para5, %para6, %para7)    #(Tensor(I32)[4], Tensor(I32)[4], Tensor(I32)[90], BoolNoShape, I64NoShape, I64NoShape, I64NoShape) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:523/                    def after_grad(*args):/#[CNode]75578
+    %2 : FuncNoShape = UnpackGraphPrimitive::UnpackGraph{prim_type=1}(FuncGraph::fg_75533, %1)    #(FuncNoShape, Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape))    # fg_75533=forward_fn.75533 #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    %3 : Tuple[Ref[Tensor(F32)]*19]TupleShape((2, 90), (2), (2, 90), (2), (90, 90), (90, 64), (90, 90), (90, 64), (2, 2), (64, 64), (128, 5760), (128), (128, 64), (128), (1, 128), (2, 64), (2), (2, 5760), (2)) = Primitive::MakeTuple{prim_type=1}(%para8, %para9, %para10, %para11, %para12, %para13, %para14, %para15, %para16, %para17, %para18, %para19, %para20, %para21, %para22, %para23, %para24, %para25, %para26)    #(Ref[Tensor(F32)][2, 90], Ref[Tensor(F32)][2], Ref[Tensor(F32)][2, 90], Ref[Tensor(F32)][2], Ref[Tensor(F32)][90, 90], Ref[Tensor(F32)][90, 64], Ref[Tensor(F32)][90, 90], Ref[Tensor(F32)][90, 64], Ref[Tensor(F32)][2, 2], Ref[Tensor(F32)][64, 64], Ref[Tensor(F32)][128, 5760], Ref[Tensor(F32)][128], Ref[Tensor(F32)][128, 64], Ref[Tensor(F32)][128], Ref[Tensor(F32)][1, 128], Ref[Tensor(F32)][2, 64], Ref[Tensor(F32)][2], Ref[Tensor(F32)][2, 5760], Ref[Tensor(F32)][2]) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#[CNode]75580
+    %4 : FuncNoShape = DoSignaturePrimitive::S-Prim-grad{prim_type=1}(%2, %3)    #(FuncNoShape, Tuple[Ref[Tensor(F32)]*19]TupleShape((2, 90), (2), (2, 90), (2), (90, 90), (90, 64), (90, 90), (90, 64), (2, 2), (64, 64), (128, 5760), (128), (128, 64), (128), (1, 128), (2, 64), (2), (2, 5760), (2))) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+
+#------------------------> 0
+    %5 = UnpackCall::unpack_call(%4, %1)    #(FuncNoShape, Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape)) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    Primitive::Return{prim_type=1}(%5)    #(Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#[CNode]75581
+}
+# order:
+#   1: @after_grad.75556:75579{[0]: ValueNode<UnpackGraphPrimitive> UnpackGraph, [1]: ValueNode<FuncGraph> forward_fn.75533, [2]: [CNode]75578}
+#   2: @after_grad.75556:75579{[0]: ValueNode<DoSignaturePrimitive> S-Prim-grad, [1]: 75579, [2]: [CNode]75580}
+#   3: @after_grad.75556:75579{[0]: ValueNode<UnpackCall> unpack_call.75582, [1]: 75579, [2]: [CNode]75578}
+#   4: @after_grad.75556:[CNode]75581{[0]: ValueNode<Primitive> Return, [1]: 75579}
+
+
+# [No.2] UnpackCall.75557
+
+funcgraph fg_75557(
+        %para31 : FuncNoShape    # 75558
+        , %para32 : Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape)    # 75559
+    ) {
+    %1 : Tensor(I32)[4] = Primitive::TupleGetItem{prim_type=1}(%para32, I64(0))    #(Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+#75583
+    %2 : Tensor(I32)[4] = Primitive::TupleGetItem{prim_type=1}(%para32, I64(1))    #(Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+#75584
+    %3 : Tensor(I32)[90] = Primitive::TupleGetItem{prim_type=1}(%para32, I64(2))    #(Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+#75585
+    %4 : BoolNoShape = Primitive::TupleGetItem{prim_type=1}(%para32, I64(3))    #(Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+#75586
+    %5 : I64NoShape = Primitive::TupleGetItem{prim_type=1}(%para32, I64(4))    #(Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+#75587
+    %6 : I64NoShape = Primitive::TupleGetItem{prim_type=1}(%para32, I64(5))    #(Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+#75588
+    %7 : I64NoShape = Primitive::TupleGetItem{prim_type=1}(%para32, I64(6))    #(Tuple[Tensor(I32)*3,Bool,I64*3]TupleShape((4), (4), (90), NoShape, NoShape, NoShape, NoShape), I64NoShape) #scope: Default
+#75589
+
+#------------------------> 1
+    %8 = %para31(%1, %2, %3, %4, %5, %6, %7)    #(Tensor(I32)[4], Tensor(I32)[4], Tensor(I32)[90], BoolNoShape, I64NoShape, I64NoShape, I64NoShape) #scope: Default
+#75590
+    Primitive::Return{prim_type=1}(%8)    #(Undefined) #scope: Default
+#75591
+}
+# order:
+#   1: @UnpackCall.75557:75590{[0]: 75558, [1]: 75583, [2]: 75584, [3]: 75585, [4]: 75586, [5]: 75587, [6]: 75588, [7]: 75589}
+#   2: @UnpackCall.75557:75591{[0]: ValueNode<Primitive> Return, [1]: 75590}
+
+
+# [No.3] forward_fn.75560
+# In file main2.py:230/        def forward_fn(batch_idx, batch_labels, regions_labels, train_flag,/
+funcgraph fg_75560[fg_75592](
+        %para33 : Tensor(I32)[4]    # forward_fn
+        , %para34 : Tensor(I32)[4]    # forward_fn
+        , %para35 : Tensor(I32)[90]    # forward_fn
+        , %para36 : BoolNoShape    # forward_fn
+        , %para37 : I64NoShape    # forward_fn
+        , %para38 : I64NoShape    # forward_fn
+        , %para39 : I64NoShape    # forward_fn
+    ) {
+    %1 : $(forward_fn.75592):FuncNoShape = Primitive::J{prim_type=1}[side_effect_propagate=I64(1)](%para-1)    #(FuncNoShape) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+
+#------------------------> 2
+    %2 = %1(%para33, %para34, %para35, %para36, %para37, %para38, %para39)    #(Tensor(I32)[4], Tensor(I32)[4], Tensor(I32)[90], BoolNoShape, I64NoShape, I64NoShape, I64NoShape) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    %3 = Primitive::TupleGetItem{prim_type=1}(%2, I64(0))    #(Undefined, Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    %4 = Primitive::TupleGetItem{prim_type=1}(%2, I64(1))    #(Undefined, Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    %5 = HyperMapPy::hyper_map[ones_like_leaf]{fn_leaf=MultitypeFuncGraph::ones_like_leaf{(CSRTensor), (COOTensor), (Tensor), (Func), (TypeType), (Number)}}(%3)    #(Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    %6 = %4(%5)    #(Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    %7 = Primitive::TupleGetItem{prim_type=1}(%6, I64(0))    #(Undefined, Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    %8 = Primitive::Partial{prim_type=1}[side_effect_propagate=I64(1)](MultitypeFuncGraph::env_get{(EnvType, Tensor)}, %7)    #(Undefined, Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    %9 = HyperMap::hyper_map(%8, %para-1)    #(Undefined, Tuple[Ref[Tensor(F32)]*19]TupleShape((2, 90), (2), (2, 90), (2), (90, 90), (90, 64), (90, 90), (90, 64), (2, 2), (64, 64), (128, 5760), (128), (128, 64), (128), (1, 128), (2, 64), (2), (2, 5760), (2))) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    %10 = Primitive::MakeTuple{prim_type=1}(%3, %9)    #(Undefined, Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+    Primitive::Return{prim_type=1}(%10)    #(Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#75579
+}
+# order:
+#   1: @forward_fn.75560:75579{[0]: 75579, [1]: forward_fn, [2]: forward_fn, [3]: forward_fn, [4]: forward_fn, [5]: forward_fn, [6]: forward_fn, [7]: forward_fn}
+#   2: @forward_fn.75560:75579{[0]: ValueNode<Primitive> TupleGetItem, [1]: 75579, [2]: ValueNode<Int64Imm> 0}
+#   3: @forward_fn.75560:75579{[0]: ValueNode<Primitive> TupleGetItem, [1]: 75579, [2]: ValueNode<Int64Imm> 1}
+#   4: @forward_fn.75560:75579{[0]: ValueNode<HyperMapPy> hyper_map[ones_like_leaf].75593, [1]: 75579}
+#   5: @forward_fn.75560:75579{[0]: 75579, [1]: 75579}
+#   6: @forward_fn.75560:75579{[0]: ValueNode<Primitive> TupleGetItem, [1]: 75579, [2]: ValueNode<Int64Imm> 0}
+#   7: @forward_fn.75560:75579{[0]: ValueNode<Primitive> Partial, [1]: ValueNode<MultitypeFuncGraph> env_get.58, [2]: 75579}
+#   8: @forward_fn.75560:75579{[0]: ValueNode<HyperMap> hyper_map.75594, [1]: 75579, [2]: 75595}
+#   9: @forward_fn.75560:75579{[0]: ValueNode<Primitive> MakeTuple, [1]: 75579, [2]: 75579}
+#  10: @forward_fn.75560:75579{[0]: ValueNode<Primitive> Return, [1]: 75579}
+
+
+# [No.4] forward_fn.75533
+# In file main2.py:230/        def forward_fn(batch_idx, batch_labels, regions_labels, train_flag,/
+funcgraph fg_75533[fg_75556](
+        %para40 : Tensor(I32)[4]    # batch_idx
+        , %para41 : Tensor(I32)[4]    # batch_labels
+        , %para42 : Tensor(I32)[90]    # regions_labels
+        , %para43 : BoolNoShape    # train_flag
+        , %para44 : I64NoShape    # epoch
+        , %para45 : I64NoShape    # iter
+        , %para46 : I64NoShape    # num_batchs
+    ) {
+
+#------------------------> 3
+    %1 = FuncGraph::fg_75561(%para40, %para43, %para44, %para45, %para46)    #(Tensor(I32)[4], BoolNoShape, I64NoShape, I64NoShape, I64NoShape)    # fg_75561=Default.75561 #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#[CNode]75596
+    %2 = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%1, I64(0))    #(Undefined, Undefined) #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#batch_features
+    %3 = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%1, I64(1))    #(Undefined, Undefined) #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#gnn_predicts
+    %4 = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%1, I64(2))    #(Undefined, Undefined) #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#edge_predicts
+    %5 = FuncGraph::fg_75597(%2, %para41, %para42, %3, %4, %para43)    #(Undefined, Tensor(I32)[4], Tensor(I32)[90], Undefined, Undefined, BoolNoShape)    # fg_75597=Default.75597 #scope: Default
+      # In file main2.py:234/            loss = loss_fn(batch_features, batch_labels, regions_labels,/#loss
+    %6 = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(%5, %2)    #(Undefined, Undefined) #scope: Default
+      # In file main2.py:236/            return loss, batch_features/#[CNode]75598
+    %7 = GradAux::aux_fn(%6, Bool(1))    #(Undefined, Undefined) #scope: Default
+      # In file /usr/local/python-3.7.5/lib/python3.7/site-packages/mindspore/ops/composite/base.py:524/                        return grad_(fn, weights)(*args)/#[CNode]75599
+    Primitive::Return{prim_type=1}(%7)    #(Undefined) #scope: Default
+      # In file main2.py:236/            return loss, batch_features/#[CNode]75600
+}
+# order:
+#   1: @forward_fn.75533:[CNode]75596{[0]: ValueNode<FuncGraph> Default.75561, [1]: batch_idx, [2]: train_flag, [3]: epoch, [4]: iter, [5]: num_batchs}
+#   2: @forward_fn.75533:batch_features{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75596, [2]: ValueNode<Int64Imm> 0}
+#   3: @forward_fn.75533:gnn_predicts{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75596, [2]: ValueNode<Int64Imm> 1}
+#   4: @forward_fn.75533:edge_predicts{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75596, [2]: ValueNode<Int64Imm> 2}
+#   5: @forward_fn.75533:loss{[0]: ValueNode<FuncGraph> Default.75597, [1]: batch_features, [2]: batch_labels, [3]: regions_labels, [4]: gnn_predicts, [5]: edge_predicts, [6]: train_flag}
+#   6: @forward_fn.75533:[CNode]75598{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: loss, [2]: batch_features}
+#   7: @forward_fn.75533:[CNode]75600{[0]: ValueNode<Primitive> Return, [1]: [CNode]75599}
+#   8: @forward_fn.75533:[CNode]75599{[0]: ValueNode<GradAux> aux_fn.75601, [1]: [CNode]75598, [2]: ValueNode<BoolImm> true}
+
+
+# [No.5] Default.75561
+# In file /workspace/RTGNN_mindspore/model/RTGNN2.py:74/    def construct(self, batch_idx, train_flag, epoch, iter, num_batchs):/
+funcgraph fg_75561[fg_75556](
+        %para47 : Tensor(I32)[4]    # batch_idx
+        , %para48 : BoolNoShape    # train_flag
+        , %para49 : I64NoShape    # epoch
+        , %para50 : I64NoShape    # iter
+        , %para51 : I64NoShape    # num_batchs
+    ) {
+
+#------------------------> 4
+    %1 = FuncGraph::fg_75562(I64(0), [])    #(I64NoShape, List[]ListShape[])    # fg_75562=↵Default.75562 #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#[CNode]75602
+    Primitive::Return{prim_type=1}(%1)    #(Undefined) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#[CNode]75603
+}
+# order:
+#   1: @Default.75561:[CNode]75604{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_range, [1]: ValueNode<Int64Imm> 2}
+#   2: @Default.75561:[CNode]75605{[0]: ValueNode<FuncGraph> ms_len.75548, [1]: [CNode]75604}
+#   3: @Default.75561:[CNode]75603{[0]: ValueNode<Primitive> Return, [1]: [CNode]75602}
+#   4: @Default.75561:[CNode]75602{[0]: ValueNode<FuncGraph> ↵Default.75562, [1]: ValueNode<Int64Imm> 0, [2]: ValueNode<ValueList> []}
+
+
+# [No.6] ↵Default.75562
+# In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/
+funcgraph fg_75562[fg_75561](
+        %para52 : I64NoShape    # @[CNode]75563
+        , %para53 : List[]ListShape[]    # фedge_predicts
+    ) {
+    %1 : $(Default.75561):Tuple[I64*2]TupleShape(NoShape, NoShape) = DoSignaturePrimitive::S-Prim-make_range{prim_type=1}(I64(2))    #(I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#[CNode]75604
+    %2 : $(Default.75561):I64NoShape = FuncGraph::fg_75548(%1)    #(Tuple[I64*2]TupleShape(NoShape, NoShape))    # fg_75548=ms_len.75548 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#[CNode]75605
+    %3 : BoolNoShape = MultitypeFuncGraph::less{(Tensor, Tensor), (Number, Tensor), (Number, Number), (Tensor, Number), (String, String)}(%para52, %2)    #(I64NoShape, I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#[CNode]75606
+    %4 : FuncNoShape = Primitive::Switch{prim_type=1}(%3, FuncGraph::fg_75564, FuncGraph::fg_75565)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_75564=↻Default.75564, fg_75565=↓Default.75565 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#[CNode]75607
+
+#------------------------> 9
+    %5 = %4() #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#[CNode]75608
+    Primitive::Return{prim_type=1}(%5)    #(Undefined) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#[CNode]75609
+}
+# order:
+#   1: @↵Default.75562:[CNode]75606{[0]: ValueNode<MultitypeFuncGraph> less.14, [1]: @[CNode]75563, [2]: [CNode]75605}
+#   2: @↵Default.75562:[CNode]75607{[0]: ValueNode<Primitive> Switch, [1]: [CNode]75606, [2]: ValueNode<FuncGraph> ↻Default.75564, [3]: ValueNode<FuncGraph> ↓Default.75565}
+#   3: @↵Default.75562:[CNode]75608{[0]: [CNode]75607}
+#   4: @↵Default.75562:[CNode]75609{[0]: ValueNode<Primitive> Return, [1]: [CNode]75608}
+
+
+# [No.7] ↻Default.75564
+# In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/
+funcgraph fg_75564[fg_75562](
+) {
+    %1 : I64NoShape = MultitypeFuncGraph::add{(Tensor, COOTensor), (Tensor, Tuple), (Tuple, Tensor), (Number, Tensor), (String, String), (RowTensor, Tensor), (List, Tensor), (Tensor, List), (List, List), (NoneType, NoneType), (Tensor, Tensor), (CSRTensor, CSRTensor), (Number, Number), (Tensor, Number), (Tuple, Tuple), (COOTensor, Tensor), (COOTensor, COOTensor)}(%para52, I64(1))    #(I64NoShape, I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#[CNode]75563
+    %2 : I64NoShape = Primitive::stop_gradient{prim_type=1}(%1)    #(I64NoShape) #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#[CNode]75610
+    %3 : FuncNoShape = Primitive::getattr{prim_type=1}(%para53, "append")    #(List[]ListShape[], StringNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:79/            edge_predicts.append(edge_predict)/#[CNode]75611
+    %4 : Tuple[Func*2]TupleShape(NoShape, NoShape) = Primitive::MakeTuple{prim_type=1}(FuncGraph::fg_75612, FuncGraph::fg_75613)    #(FuncNoShape, FuncNoShape)    # fg_75612=Dense.75612, fg_75613=Dense.75613 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:77/            edge_predict = self.tanh(self.fnns[i](/#[CNode]75614
+    %5 : $(Default.75561):Tuple[I64*2]TupleShape(NoShape, NoShape) = DoSignaturePrimitive::S-Prim-make_range{prim_type=1}(I64(2))    #(I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#[CNode]75604
+    %6 : I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%5, %para52)    #(Tuple[I64*2]TupleShape(NoShape, NoShape), I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#i
+    %7 : FuncNoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%4, %6)    #(Tuple[Func*2]TupleShape(NoShape, NoShape), I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:77/            edge_predict = self.tanh(self.fnns[i](/#[CNode]75615
+    %8 : Tensor(F32)[4, 2, 90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para27, %para47)    #(Ref[Tensor(F32)][70, 2, 90, 90], Tensor(I32)[4]) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:78/                self.features[batch_idx][:, i, :, :]))  #Tensor/#[CNode]75616
+    %9 : Slice[None : None : None]NoShape = DoSignaturePrimitive::S-Prim-make_slice{prim_type=1}(None, None, None)    #(NoneTypeNoShape, NoneTypeNoShape, NoneTypeNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:78/                self.features[batch_idx][:, i, :, :]))  #Tensor/#[CNode]75617
+    %10 : Slice[None : None : None]NoShape = DoSignaturePrimitive::S-Prim-make_slice{prim_type=1}(None, None, None)    #(NoneTypeNoShape, NoneTypeNoShape, NoneTypeNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:78/                self.features[batch_idx][:, i, :, :]))  #Tensor/#[CNode]75618
+    %11 : Slice[None : None : None]NoShape = DoSignaturePrimitive::S-Prim-make_slice{prim_type=1}(None, None, None)    #(NoneTypeNoShape, NoneTypeNoShape, NoneTypeNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:78/                self.features[batch_idx][:, i, :, :]))  #Tensor/#[CNode]75619
+    %12 : Tuple[Slice[None : None : None],I64,Slice[None : None : None]*2]TupleShape(NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(%9, %6, %10, %11)    #(Slice[None : None : None]NoShape, I64NoShape, Slice[None : None : None]NoShape, Slice[None : None : None]NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:78/                self.features[batch_idx][:, i, :, :]))  #Tensor/#[CNode]75620
+    %13 : Tensor(F32)[4, 90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%8, %12)    #(Tensor(F32)[4, 2, 90, 90], Tuple[Slice[None : None : None],I64,Slice[None : None : None]*2]TupleShape(NoShape, NoShape, NoShape, NoShape)) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:78/                self.features[batch_idx][:, i, :, :]))  #Tensor/#[CNode]75621
+    %14 : Tensor(F32)[4, 90, 2] = %7(%13)    #(Tensor(F32)[4, 90, 90]) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:77/            edge_predict = self.tanh(self.fnns[i](/#[CNode]75622
+    %15 : Tensor(F32)[4, 90, 2] = FuncGraph::fg_75540(%14)    #(Tensor(F32)[4, 90, 2])    # fg_75540=Tanh.75540 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:77/            edge_predict = self.tanh(self.fnns[i](/#edge_predict
+    %16 : List[Tensor(F32)]ListShape[(4, 90, 2)] = %3(%15)    #(Tensor(F32)[4, 90, 2]) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:79/            edge_predicts.append(edge_predict)/#edge_predicts
+
+#------------------------> 8
+    %17 = FuncGraph::fg_75562(%1, %16)    #(I64NoShape, List[Tensor(F32)]ListShape[(4, 90, 2)])    # fg_75562=↵Default.75562 #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#[CNode]75623
+    %18 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%17, %2)    #(Undefined, I64NoShape) #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#[CNode]75624
+    Primitive::Return{prim_type=1}(%18)    #(Undefined) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/#[CNode]75625
+}
+# order:
+#   1: @↻Default.75564:i{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75604, [2]: @[CNode]75563}
+#   2: @↻Default.75564:[CNode]75563{[0]: ValueNode<MultitypeFuncGraph> add.11, [1]: @[CNode]75563, [2]: ValueNode<Int64Imm> 1}
+#   3: @↻Default.75564:[CNode]75615{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75614, [2]: i}
+#   4: @↻Default.75564:[CNode]75616{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: features, [2]: batch_idx}
+#   5: @↻Default.75564:[CNode]75617{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_slice, [1]: ValueNode<None> None, [2]: ValueNode<None> None, [3]: ValueNode<None> None}
+#   6: @↻Default.75564:[CNode]75618{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_slice, [1]: ValueNode<None> None, [2]: ValueNode<None> None, [3]: ValueNode<None> None}
+#   7: @↻Default.75564:[CNode]75619{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_slice, [1]: ValueNode<None> None, [2]: ValueNode<None> None, [3]: ValueNode<None> None}
+#   8: @↻Default.75564:[CNode]75620{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: [CNode]75617, [2]: i, [3]: [CNode]75618, [4]: [CNode]75619}
+#   9: @↻Default.75564:[CNode]75621{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75616, [2]: [CNode]75620}
+#  10: @↻Default.75564:[CNode]75622{[0]: [CNode]75615, [1]: [CNode]75621}
+#  11: @↻Default.75564:edge_predict{[0]: ValueNode<FuncGraph> Tanh.75540, [1]: [CNode]75622}
+#  12: @↻Default.75564:[CNode]75611{[0]: ValueNode<Primitive> getattr, [1]: фedge_predicts, [2]: ValueNode<StringImm> append}
+#  13: @↻Default.75564:edge_predicts{[0]: [CNode]75611, [1]: edge_predict}
+#  14: @↻Default.75564:[CNode]75625{[0]: ValueNode<Primitive> Return, [1]: [CNode]75624}
+#  15: @↻Default.75564:[CNode]75623{[0]: ValueNode<FuncGraph> ↵Default.75562, [1]: [CNode]75563, [2]: edge_predicts}
+
+
+# [No.8] ↓Default.75565
+# In file /workspace/RTGNN_mindspore/model/RTGNN2.py:76/        for i in range(self.num_views):/
+funcgraph fg_75565[fg_75562](
+) {
+
+#------------------------> 10
+    %1 = FuncGraph::fg_75566(I64(0), [], [])    #(I64NoShape, List[]ListShape[], List[]ListShape[])    # fg_75566=↵↓Default.75566 #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#[CNode]75626
+    Primitive::Return{prim_type=1}(%1)    #(Undefined) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75627
+}
+# order:
+#   1: @↓Default.75565:[CNode]75628{[0]: ValueNode<FuncGraph> enumerate_.75629, [1]: [CNode]75630}
+#   2: @↓Default.75565:[CNode]75631{[0]: ValueNode<FuncGraph> ms_len.75548, [1]: [CNode]75628}
+#   3: @↓Default.75565:[CNode]75627{[0]: ValueNode<Primitive> Return, [1]: [CNode]75626}
+#   4: @↓Default.75565:[CNode]75626{[0]: ValueNode<FuncGraph> ↵↓Default.75566, [1]: ValueNode<Int64Imm> 0, [2]: ValueNode<ValueList> [], [3]: ValueNode<ValueList> []}
+
+
+# [No.9] ↵↓Default.75566
+# In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/
+funcgraph fg_75566[fg_75565](
+        %para54 : I64NoShape    # @[CNode]75567
+        , %para55 : List[]ListShape[]    # фview_features_list
+        , %para56 : List[]ListShape[]    # фview_scores_list
+    ) {
+    %1 : $(↓Default.75565):Tuple[Func*2]TupleShape(NoShape, NoShape) = Primitive::MakeTuple{prim_type=1}(FuncGraph::fg_75632, FuncGraph::fg_75633)    #(FuncNoShape, FuncNoShape)    # fg_75632=IntraGNN.75632, fg_75633=IntraGNN.75633 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75630
+    %2 : $(↓Default.75565):Tuple[Tuple[I64,Func]*2]TupleShape(TupleShape(NoShape, NoShape), TupleShape(NoShape, NoShape)) = FuncGraph::fg_75629(%1)    #(Tuple[Func*2]TupleShape(NoShape, NoShape))    # fg_75629=enumerate_.75629 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75628
+    %3 : $(↓Default.75565):I64NoShape = FuncGraph::fg_75548(%2)    #(Tuple[Tuple[I64,Func]*2]TupleShape(TupleShape(NoShape, NoShape), TupleShape(NoShape, NoShape)))    # fg_75548=ms_len.75548 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75631
+    %4 : BoolNoShape = MultitypeFuncGraph::less{(Tensor, Tensor), (Number, Tensor), (Number, Number), (Tensor, Number), (String, String)}(%para54, %3)    #(I64NoShape, I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75634
+    %5 : FuncNoShape = Primitive::Switch{prim_type=1}(%4, FuncGraph::fg_75568, FuncGraph::fg_75569)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_75568=↻↓Default.75568, fg_75569=↓↓Default.75569 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75635
+
+#------------------------> 15
+    %6 = %5() #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75636
+    Primitive::Return{prim_type=1}(%6)    #(Undefined) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75637
+}
+# order:
+#   1: @↵↓Default.75566:[CNode]75634{[0]: ValueNode<MultitypeFuncGraph> less.14, [1]: @[CNode]75567, [2]: [CNode]75631}
+#   2: @↵↓Default.75566:[CNode]75635{[0]: ValueNode<Primitive> Switch, [1]: [CNode]75634, [2]: ValueNode<FuncGraph> ↻↓Default.75568, [3]: ValueNode<FuncGraph> ↓↓Default.75569}
+#   3: @↵↓Default.75566:[CNode]75636{[0]: [CNode]75635}
+#   4: @↵↓Default.75566:[CNode]75637{[0]: ValueNode<Primitive> Return, [1]: [CNode]75636}
+
+
+# [No.10] ↻↓Default.75568
+# In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/
+funcgraph fg_75568[fg_75566](
+) {
+    %1 : I64NoShape = MultitypeFuncGraph::add{(Tensor, COOTensor), (Tensor, Tuple), (Tuple, Tensor), (Number, Tensor), (String, String), (RowTensor, Tensor), (List, Tensor), (Tensor, List), (List, List), (NoneType, NoneType), (Tensor, Tensor), (CSRTensor, CSRTensor), (Number, Number), (Tensor, Number), (Tuple, Tuple), (COOTensor, Tensor), (COOTensor, COOTensor)}(%para54, I64(1))    #(I64NoShape, I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75567
+    %2 : I64NoShape = Primitive::stop_gradient{prim_type=1}(%1)    #(I64NoShape) #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#[CNode]75638
+    %3 : FuncNoShape = Primitive::getattr{prim_type=1}(%para55, "append")    #(List[]ListShape[], StringNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:97/            view_features_list.append(view_features)/#[CNode]75639
+    %4 : $(↓Default.75565):Tuple[Func*2]TupleShape(NoShape, NoShape) = Primitive::MakeTuple{prim_type=1}(FuncGraph::fg_75632, FuncGraph::fg_75633)    #(FuncNoShape, FuncNoShape)    # fg_75632=IntraGNN.75632, fg_75633=IntraGNN.75633 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75630
+    %5 : $(↓Default.75565):Tuple[Tuple[I64,Func]*2]TupleShape(TupleShape(NoShape, NoShape), TupleShape(NoShape, NoShape)) = FuncGraph::fg_75629(%4)    #(Tuple[Func*2]TupleShape(NoShape, NoShape))    # fg_75629=enumerate_.75629 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75628
+    %6 : Tuple[I64,Func]TupleShape(NoShape, NoShape) = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%5, %para54)    #(Tuple[Tuple[I64,Func]*2]TupleShape(TupleShape(NoShape, NoShape), TupleShape(NoShape, NoShape)), I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75640
+    %7 : FuncNoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%6, I64(1))    #(Tuple[I64,Func]TupleShape(NoShape, NoShape), I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#intra_gnn
+    %8 : Slice[None : None : None]NoShape = DoSignaturePrimitive::S-Prim-make_slice{prim_type=1}(None, None, None)    #(NoneTypeNoShape, NoneTypeNoShape, NoneTypeNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:92/            view_features, view_score = intra_gnn(self.features[:, i, :, :],/#[CNode]75641
+    %9 : I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%6, I64(0))    #(Tuple[I64,Func]TupleShape(NoShape, NoShape), I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#i
+    %10 : Slice[None : None : None]NoShape = DoSignaturePrimitive::S-Prim-make_slice{prim_type=1}(None, None, None)    #(NoneTypeNoShape, NoneTypeNoShape, NoneTypeNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:92/            view_features, view_score = intra_gnn(self.features[:, i, :, :],/#[CNode]75642
+    %11 : Slice[None : None : None]NoShape = DoSignaturePrimitive::S-Prim-make_slice{prim_type=1}(None, None, None)    #(NoneTypeNoShape, NoneTypeNoShape, NoneTypeNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:92/            view_features, view_score = intra_gnn(self.features[:, i, :, :],/#[CNode]75643
+    %12 : Tuple[Slice[None : None : None],I64,Slice[None : None : None]*2]TupleShape(NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(%8, %9, %10, %11)    #(Slice[None : None : None]NoShape, I64NoShape, Slice[None : None : None]NoShape, Slice[None : None : None]NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:92/            view_features, view_score = intra_gnn(self.features[:, i, :, :],/#[CNode]75644
+    %13 : Tensor(F32)[70, 90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para27, %12)    #(Ref[Tensor(F32)][70, 2, 90, 90], Tuple[Slice[None : None : None],I64,Slice[None : None : None]*2]TupleShape(NoShape, NoShape, NoShape, NoShape)) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:92/            view_features, view_score = intra_gnn(self.features[:, i, :, :],/#[CNode]75645
+    %14 : Slice[None : None : None]NoShape = DoSignaturePrimitive::S-Prim-make_slice{prim_type=1}(None, None, None)    #(NoneTypeNoShape, NoneTypeNoShape, NoneTypeNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:93/                                                  self.weights[:, i, :, :],/#[CNode]75646
+    %15 : Slice[None : None : None]NoShape = DoSignaturePrimitive::S-Prim-make_slice{prim_type=1}(None, None, None)    #(NoneTypeNoShape, NoneTypeNoShape, NoneTypeNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:93/                                                  self.weights[:, i, :, :],/#[CNode]75647
+    %16 : Slice[None : None : None]NoShape = DoSignaturePrimitive::S-Prim-make_slice{prim_type=1}(None, None, None)    #(NoneTypeNoShape, NoneTypeNoShape, NoneTypeNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:93/                                                  self.weights[:, i, :, :],/#[CNode]75648
+    %17 : Tuple[Slice[None : None : None],I64,Slice[None : None : None]*2]TupleShape(NoShape, NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(%14, %9, %15, %16)    #(Slice[None : None : None]NoShape, I64NoShape, Slice[None : None : None]NoShape, Slice[None : None : None]NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:93/                                                  self.weights[:, i, :, :],/#[CNode]75649
+    %18 : Tensor(F32)[70, 90, 90] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para28, %17)    #(Ref[Tensor(F32)][70, 2, 90, 90], Tuple[Slice[None : None : None],I64,Slice[None : None : None]*2]TupleShape(NoShape, NoShape, NoShape, NoShape)) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:93/                                                  self.weights[:, i, :, :],/#[CNode]75650
+    %19 : Tensor(F32)[4, 90, 2] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para53, %9)    #(List[Tensor(F32)*2]ListShape[(4, 90, 2), (4, 90, 2)], I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:94/                                                  edge_predicts[i],/#[CNode]75651
+    %20 : Tensor(F32)[] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para29, %9)    #(Ref[Tensor(F32)][2], I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:95/                                                  self.RL_thresholds[i],/#[CNode]75652
+    %21 : Tuple[Tensor(F32)*2]TupleShape((4, 90, 64), ()) = %7(%13, %18, %19, %20, %para47)    #(Tensor(F32)[70, 90, 90], Tensor(F32)[70, 90, 90], Tensor(F32)[4, 90, 2], Tensor(F32)[], Tensor(I32)[4]) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:92/            view_features, view_score = intra_gnn(self.features[:, i, :, :],/#[CNode]75653
+    %22 : Tensor(F32)[4, 90, 64] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%21, I64(0))    #(Tuple[Tensor(F32)*2]TupleShape((4, 90, 64), ()), I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:92/            view_features, view_score = intra_gnn(self.features[:, i, :, :],/#view_features
+    %23 : List[Tensor(F32)]ListShape[(4, 90, 64)] = %3(%22)    #(Tensor(F32)[4, 90, 64]) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:97/            view_features_list.append(view_features)/#view_features_list
+    %24 : FuncNoShape = Primitive::getattr{prim_type=1}(%para56, "append")    #(List[]ListShape[], StringNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:98/            view_scores_list.append(view_score)/#[CNode]75654
+    %25 : Tensor(F32)[] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%21, I64(1))    #(Tuple[Tensor(F32)*2]TupleShape((4, 90, 64), ()), I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:92/            view_features, view_score = intra_gnn(self.features[:, i, :, :],/#view_score
+    %26 : List[Tensor(F32)]ListShape[()] = %24(%25)    #(Tensor(F32)[]) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:98/            view_scores_list.append(view_score)/#view_scores_list
+
+#------------------------> 14
+    %27 = FuncGraph::fg_75566(%1, %23, %26)    #(I64NoShape, List[Tensor(F32)]ListShape[(4, 90, 64)], List[Tensor(F32)]ListShape[()])    # fg_75566=↵↓Default.75566 #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#[CNode]75655
+    %28 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%27, %2)    #(Undefined, I64NoShape) #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#[CNode]75656
+    Primitive::Return{prim_type=1}(%28)    #(Undefined) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/#[CNode]75657
+}
+# order:
+#   1: @↻↓Default.75568:[CNode]75640{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75628, [2]: @[CNode]75567}
+#   2: @↻↓Default.75568:i{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75640, [2]: ValueNode<Int64Imm> 0}
+#   3: @↻↓Default.75568:intra_gnn{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75640, [2]: ValueNode<Int64Imm> 1}
+#   4: @↻↓Default.75568:[CNode]75567{[0]: ValueNode<MultitypeFuncGraph> add.11, [1]: @[CNode]75567, [2]: ValueNode<Int64Imm> 1}
+#   5: @↻↓Default.75568:[CNode]75641{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_slice, [1]: ValueNode<None> None, [2]: ValueNode<None> None, [3]: ValueNode<None> None}
+#   6: @↻↓Default.75568:[CNode]75642{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_slice, [1]: ValueNode<None> None, [2]: ValueNode<None> None, [3]: ValueNode<None> None}
+#   7: @↻↓Default.75568:[CNode]75643{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_slice, [1]: ValueNode<None> None, [2]: ValueNode<None> None, [3]: ValueNode<None> None}
+#   8: @↻↓Default.75568:[CNode]75644{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: [CNode]75641, [2]: i, [3]: [CNode]75642, [4]: [CNode]75643}
+#   9: @↻↓Default.75568:[CNode]75645{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: features, [2]: [CNode]75644}
+#  10: @↻↓Default.75568:[CNode]75646{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_slice, [1]: ValueNode<None> None, [2]: ValueNode<None> None, [3]: ValueNode<None> None}
+#  11: @↻↓Default.75568:[CNode]75647{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_slice, [1]: ValueNode<None> None, [2]: ValueNode<None> None, [3]: ValueNode<None> None}
+#  12: @↻↓Default.75568:[CNode]75648{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_slice, [1]: ValueNode<None> None, [2]: ValueNode<None> None, [3]: ValueNode<None> None}
+#  13: @↻↓Default.75568:[CNode]75649{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: [CNode]75646, [2]: i, [3]: [CNode]75647, [4]: [CNode]75648}
+#  14: @↻↓Default.75568:[CNode]75650{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: weights, [2]: [CNode]75649}
+#  15: @↻↓Default.75568:[CNode]75651{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: фedge_predicts, [2]: i}
+#  16: @↻↓Default.75568:[CNode]75652{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: RL_thresholds, [2]: i}
+#  17: @↻↓Default.75568:[CNode]75653{[0]: intra_gnn, [1]: [CNode]75645, [2]: [CNode]75650, [3]: [CNode]75651, [4]: [CNode]75652, [5]: batch_idx}
+#  18: @↻↓Default.75568:view_features{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75653, [2]: ValueNode<Int64Imm> 0}
+#  19: @↻↓Default.75568:view_score{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]75653, [2]: ValueNode<Int64Imm> 1}
+#  20: @↻↓Default.75568:[CNode]75639{[0]: ValueNode<Primitive> getattr, [1]: фview_features_list, [2]: ValueNode<StringImm> append}
+#  21: @↻↓Default.75568:view_features_list{[0]: [CNode]75639, [1]: view_features}
+#  22: @↻↓Default.75568:[CNode]75654{[0]: ValueNode<Primitive> getattr, [1]: фview_scores_list, [2]: ValueNode<StringImm> append}
+#  23: @↻↓Default.75568:view_scores_list{[0]: [CNode]75654, [1]: view_score}
+#  24: @↻↓Default.75568:[CNode]75657{[0]: ValueNode<Primitive> Return, [1]: [CNode]75656}
+#  25: @↻↓Default.75568:[CNode]75655{[0]: ValueNode<FuncGraph> ↵↓Default.75566, [1]: [CNode]75567, [2]: view_features_list, [3]: view_scores_list}
+
+
+# [No.11] ↓↓Default.75569
+# In file /workspace/RTGNN_mindspore/model/RTGNN2.py:82/        for i, intra_gnn in enumerate(self.intra_gnns):/
+funcgraph fg_75569[fg_75566](
+) {
+    %1 : BoolNoShape = DoSignaturePrimitive::S-Prim-equal{prim_type=1}("mean", "concat")    #(StringNoShape, StringNoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:100/        if self.mat2vec == 'concat':/#[CNode]75658
+    %2 : BoolNoShape = FuncGraph::fg_75541(%1)    #(BoolNoShape)    # fg_75541=bool_.75541 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:100/        if self.mat2vec == 'concat':/#[CNode]75659
+    %3 : FuncNoShape = Primitive::Switch{prim_type=1}(%2, FuncGraph::fg_75660, FuncGraph::fg_75570)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_75660=✓↓↓Default.75660, fg_75570=✗↓↓Default.75570 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:100/        if self.mat2vec == 'concat':/#[CNode]75661
+
+#------------------------> 16
+    %4 = %3() #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:100/        if self.mat2vec == 'concat':/#[CNode]75662
+    %5 = FuncGraph::fg_75663(%4)    #(Undefined)    # fg_75663=↓↓↓Default.75663 #scope: Default
+      # In file main2.py:232/            batch_features, gnn_predicts, edge_predicts = model(/#[CNode]75664
+    Primitive::Return{prim_type=1}(%5)    #(Undefined) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:100/        if self.mat2vec == 'concat':/#[CNode]75665
+}
+# order:
+#   1: @↓↓Default.75569:фbatch_features{[0]: ValueNode<FuncGraph> InterGNN.75571, [1]: фview_features_list}
+#   2: @↓↓Default.75569:[CNode]75658{[0]: ValueNode<DoSignaturePrimitive> S-Prim-equal, [1]: ValueNode<StringImm> mean, [2]: ValueNode<StringImm> concat}
+#   3: @↓↓Default.75569:[CNode]75659{[0]: ValueNode<FuncGraph> bool_.75541, [1]: [CNode]75658}
+#   4: @↓↓Default.75569:[CNode]75661{[0]: ValueNode<Primitive> Switch, [1]: [CNode]75659, [2]: ValueNode<FuncGraph> ✓↓↓Default.75660, [3]: ValueNode<FuncGraph> ✗↓↓Default.75570}
+#   5: @↓↓Default.75569:[CNode]75662{[0]: [CNode]75661}
+#   6: @↓↓Default.75569:[CNode]75664{[0]: ValueNode<FuncGraph> ↓↓↓Default.75663, [1]: [CNode]75662}
+#   7: @↓↓Default.75569:[CNode]75665{[0]: ValueNode<Primitive> Return, [1]: [CNode]75664}
+
+
+# [No.12] ✗↓↓Default.75570
+# In file /workspace/RTGNN_mindspore/model/RTGNN2.py:100/        if self.mat2vec == 'concat':/
+funcgraph fg_75570[fg_75569](
+) {
+
+#------------------------> 17
+    %1 = $(↓↓Default.75569):FuncGraph::fg_75571(%para55)    #(List[Tensor(F32)*2]ListShape[(4, 90, 64), (4, 90, 64)])    # fg_75571=InterGNN.75571 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:133/        return batch_features, gnn_predicts, edge_predicts/#фbatch_features
+    %2 = FuncGraph::fg_75666(%1)    #(Undefined)    # fg_75666=Dense.75666 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:103/            gnn_predicts = self.output_fnn(batch_features)/#gnn_predicts
+    Primitive::Return{prim_type=1}(%2)    #(Undefined) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:100/        if self.mat2vec == 'concat':/#[CNode]75667
+}
+# order:
+#   1: @✗↓↓Default.75570:gnn_predicts{[0]: ValueNode<FuncGraph> Dense.75666, [1]: фbatch_features}
+#   2: @✗↓↓Default.75570:[CNode]75667{[0]: ValueNode<Primitive> Return, [1]: gnn_predicts}
+
+
+# [No.13] InterGNN.75571
+# In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:94/    def construct(self, view_features_list):/
+funcgraph fg_75571[fg_75556](
+        %para57 : List[Tensor(F32)*2]ListShape[(4, 90, 64), (4, 90, 64)]    # view_features_list
+    ) {
+    %1 : BoolNoShape = DoSignaturePrimitive::S-Prim-equal{prim_type=1}("gat", "gcn")    #(StringNoShape, StringNoShape) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:95/        if self.inter_type == 'gcn':/#[CNode]75668
+    %2 : BoolNoShape = FuncGraph::fg_75541(%1)    #(BoolNoShape)    # fg_75541=bool_.75541 #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:95/        if self.inter_type == 'gcn':/#[CNode]75669
+    %3 : FuncNoShape = Primitive::Switch{prim_type=1}(%2, FuncGraph::fg_75670, FuncGraph::fg_75572)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_75670=✓InterGNN.75670, fg_75572=✗InterGNN.75572 #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:95/        if self.inter_type == 'gcn':/#[CNode]75671
+
+#------------------------> 18
+    %4 = %3() #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:95/        if self.inter_type == 'gcn':/#[CNode]75672
+    %5 = FuncGraph::fg_75673(%4)    #(Undefined)    # fg_75673=↓InterGNN.75673 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:99/        batch_features = self.inter_gnn(view_features_list)/#[CNode]75674
+    Primitive::Return{prim_type=1}(%5)    #(Undefined) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:95/        if self.inter_type == 'gcn':/#[CNode]75675
+}
+# order:
+#   1: @InterGNN.75571:[CNode]75668{[0]: ValueNode<DoSignaturePrimitive> S-Prim-equal, [1]: ValueNode<StringImm> gat, [2]: ValueNode<StringImm> gcn}
+#   2: @InterGNN.75571:[CNode]75669{[0]: ValueNode<FuncGraph> bool_.75541, [1]: [CNode]75668}
+#   3: @InterGNN.75571:[CNode]75671{[0]: ValueNode<Primitive> Switch, [1]: [CNode]75669, [2]: ValueNode<FuncGraph> ✓InterGNN.75670, [3]: ValueNode<FuncGraph> ✗InterGNN.75572}
+#   4: @InterGNN.75571:[CNode]75672{[0]: [CNode]75671}
+#   5: @InterGNN.75571:[CNode]75674{[0]: ValueNode<FuncGraph> ↓InterGNN.75673, [1]: [CNode]75672}
+#   6: @InterGNN.75571:[CNode]75675{[0]: ValueNode<Primitive> Return, [1]: [CNode]75674}
+
+
+# [No.14] ✗InterGNN.75572
+# In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:95/        if self.inter_type == 'gcn':/
+funcgraph fg_75572[fg_75571](
+) {
+    %1 : BoolNoShape = DoSignaturePrimitive::S-Prim-equal{prim_type=1}("gat", "gat")    #(StringNoShape, StringNoShape) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:105/        elif self.inter_type == 'gat':/#[CNode]75676
+    %2 : BoolNoShape = FuncGraph::fg_75541(%1)    #(BoolNoShape)    # fg_75541=bool_.75541 #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:105/        elif self.inter_type == 'gat':/#[CNode]75677
+    %3 : FuncNoShape = Primitive::Switch{prim_type=1}(%2, FuncGraph::fg_75573, FuncGraph::fg_75678)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_75573=✓✗InterGNN.75573, fg_75678=✗✗InterGNN.75678 #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:105/        elif self.inter_type == 'gat':/#[CNode]75679
+
+#------------------------> 19
+    %4 = %3() #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:105/        elif self.inter_type == 'gat':/#[CNode]75680
+    %5 = FuncGraph::fg_75681(%4)    #(Undefined)    # fg_75681=↓✗InterGNN.75681 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:99/        batch_features = self.inter_gnn(view_features_list)/#[CNode]75682
+    Primitive::Return{prim_type=1}(%5)    #(Undefined) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:105/        elif self.inter_type == 'gat':/#[CNode]75683
+}
+# order:
+#   1: @✗InterGNN.75572:[CNode]75676{[0]: ValueNode<DoSignaturePrimitive> S-Prim-equal, [1]: ValueNode<StringImm> gat, [2]: ValueNode<StringImm> gat}
+#   2: @✗InterGNN.75572:[CNode]75677{[0]: ValueNode<FuncGraph> bool_.75541, [1]: [CNode]75676}
+#   3: @✗InterGNN.75572:[CNode]75679{[0]: ValueNode<Primitive> Switch, [1]: [CNode]75677, [2]: ValueNode<FuncGraph> ✓✗InterGNN.75573, [3]: ValueNode<FuncGraph> ✗✗InterGNN.75678}
+#   4: @✗InterGNN.75572:[CNode]75680{[0]: [CNode]75679}
+#   5: @✗InterGNN.75572:[CNode]75682{[0]: ValueNode<FuncGraph> ↓✗InterGNN.75681, [1]: [CNode]75680}
+#   6: @✗InterGNN.75572:[CNode]75683{[0]: ValueNode<Primitive> Return, [1]: [CNode]75682}
+
+
+# [No.15] ✓✗InterGNN.75573
+# In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:105/        elif self.inter_type == 'gat':/
+funcgraph fg_75573[fg_75571](
+) {
+
+#------------------------> 20
+    %1 = FuncGraph::fg_75574(I64(0), [], [])    #(I64NoShape, List[]ListShape[], List[]ListShape[])    # fg_75574=↵✓✗InterGNN.75574 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:99/        batch_features = self.inter_gnn(view_features_list)/#[CNode]75684
+    Primitive::Return{prim_type=1}(%1)    #(Undefined) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:108/            for view_features in view_features_list:/#[CNode]75685
+}
+# order:
+#   1: @✓✗InterGNN.75573:[CNode]75686{[0]: ValueNode<FuncGraph> ms_len.75548, [1]: view_features_list}
+#   2: @✓✗InterGNN.75573:[CNode]75685{[0]: ValueNode<Primitive> Return, [1]: [CNode]75684}
+#   3: @✓✗InterGNN.75573:[CNode]75684{[0]: ValueNode<FuncGraph> ↵✓✗InterGNN.75574, [1]: ValueNode<Int64Imm> 0, [2]: ValueNode<ValueList> [], [3]: ValueNode<ValueList> []}
+
+
+# [No.16] ↵✓✗InterGNN.75574
+# In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:108/            for view_features in view_features_list:/
+funcgraph fg_75574[fg_75573](
+        %para58 : I64NoShape    # @[CNode]75575
+        , %para59 : List[]ListShape[]    # фbatch_features
+        , %para60 : List[]ListShape[]    # фbeta
+    ) {
+    %1 : $(✓✗InterGNN.75573):I64NoShape = FuncGraph::fg_75548(%para57)    #(List[Tensor(F32)*2]ListShape[(4, 90, 64), (4, 90, 64)])    # fg_75548=ms_len.75548 #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:108/            for view_features in view_features_list:/#[CNode]75686
+    %2 : BoolNoShape = MultitypeFuncGraph::less{(Tensor, Tensor), (Number, Tensor), (Number, Number), (Tensor, Number), (String, String)}(%para58, %1)    #(I64NoShape, I64NoShape) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:108/            for view_features in view_features_list:/#[CNode]75687
+    %3 : FuncNoShape = Primitive::Switch{prim_type=1}(%2, FuncGraph::fg_75576, FuncGraph::fg_75688)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_75576=↻✓✗InterGNN.75576, fg_75688=↓✓✗InterGNN.75688 #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:108/            for view_features in view_features_list:/#[CNode]75689
+
+#------------------------> 21
+    %4 = %3() #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:108/            for view_features in view_features_list:/#[CNode]75690
+    Primitive::Return{prim_type=1}(%4)    #(Undefined) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:108/            for view_features in view_features_list:/#[CNode]75691
+}
+# order:
+#   1: @↵✓✗InterGNN.75574:[CNode]75687{[0]: ValueNode<MultitypeFuncGraph> less.14, [1]: @[CNode]75575, [2]: [CNode]75686}
+#   2: @↵✓✗InterGNN.75574:[CNode]75689{[0]: ValueNode<Primitive> Switch, [1]: [CNode]75687, [2]: ValueNode<FuncGraph> ↻✓✗InterGNN.75576, [3]: ValueNode<FuncGraph> ↓✓✗InterGNN.75688}
+#   3: @↵✓✗InterGNN.75574:[CNode]75690{[0]: [CNode]75689}
+#   4: @↵✓✗InterGNN.75574:[CNode]75691{[0]: ValueNode<Primitive> Return, [1]: [CNode]75690}
+
+
+# [No.17] ↻✓✗InterGNN.75576
+# In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:108/            for view_features in view_features_list:/
+funcgraph fg_75576[fg_75574](
+) {
+    %1 : I64NoShape = MultitypeFuncGraph::add{(Tensor, COOTensor), (Tensor, Tuple), (Tuple, Tensor), (Number, Tensor), (String, String), (RowTensor, Tensor), (List, Tensor), (Tensor, List), (List, List), (NoneType, NoneType), (Tensor, Tensor), (CSRTensor, CSRTensor), (Number, Number), (Tensor, Number), (Tuple, Tuple), (COOTensor, Tensor), (COOTensor, COOTensor)}(%para58, I64(1))    #(I64NoShape, I64NoShape) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:108/            for view_features in view_features_list:/#[CNode]75575
+    %2 : I64NoShape = Primitive::stop_gradient{prim_type=1}(%1)    #(I64NoShape) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:99/        batch_features = self.inter_gnn(view_features_list)/#[CNode]75692
+    %3 : BoolNoShape = DoSignaturePrimitive::S-Prim-equal{prim_type=1}("mean", "concat")    #(StringNoShape, StringNoShape) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:112/                if self.mat2vec == 'concat':/#[CNode]75693
+    %4 : BoolNoShape = FuncGraph::fg_75541(%3)    #(BoolNoShape)    # fg_75541=bool_.75541 #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:112/                if self.mat2vec == 'concat':/#[CNode]75694
+    %5 : FuncNoShape = Primitive::Switch{prim_type=1}(%4, FuncGraph::fg_75695, FuncGraph::fg_75577)    #(BoolNoShape, FuncNoShape, FuncNoShape)    # fg_75695=✓↻✓✗InterGNN.75695, fg_75577=✗↻✓✗InterGNN.75577 #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:112/                if self.mat2vec == 'concat':/#[CNode]75696
+
+#------------------------> 22
+    %6 = %5() #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:112/                if self.mat2vec == 'concat':/#[CNode]75697
+    %7 = FuncGraph::fg_75698(%6)    #(Undefined)    # fg_75698=↓↻✓✗InterGNN.75698 #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:99/        batch_features = self.inter_gnn(view_features_list)/#[CNode]75699
+    %8 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%7, %2)    #(Undefined, I64NoShape) #scope: Default
+      # In file /workspace/RTGNN_mindspore/model/RTGNN2.py:99/        batch_features = self.inter_gnn(view_features_list)/#[CNode]75700
+    Primitive::Return{prim_type=1}(%8)    #(Undefined) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:112/                if self.mat2vec == 'concat':/#[CNode]75701
+}
+# order:
+#   1: @↻✓✗InterGNN.75576:view_features{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: view_features_list, [2]: @[CNode]75575}
+#   2: @↻✓✗InterGNN.75576:[CNode]75575{[0]: ValueNode<MultitypeFuncGraph> add.11, [1]: @[CNode]75575, [2]: ValueNode<Int64Imm> 1}
+#   3: @↻✓✗InterGNN.75576:view_features{[0]: ValueNode<FuncGraph> RL_module.75555, [1]: view_features, [2]: ValueNode<StringImm> mean}
+#   4: @↻✓✗InterGNN.75576:[CNode]75702{[0]: ValueNode<Primitive> getattr, [1]: фbatch_features, [2]: ValueNode<StringImm> append}
+#   5: @↻✓✗InterGNN.75576:[CNode]75703{[0]: ValueNode<ClassType> class 'mindspore.ops.operations.array_ops.ExpandDims'}
+#   6: @↻✓✗InterGNN.75576:[CNode]75704{[0]: [CNode]75703, [1]: view_features, [2]: ValueNode<Int64Imm> 0}
+#   7: @↻✓✗InterGNN.75576:фbatch_features{[0]: [CNode]75702, [1]: [CNode]75704}
+#   8: @↻✓✗InterGNN.75576:[CNode]75693{[0]: ValueNode<DoSignaturePrimitive> S-Prim-equal, [1]: ValueNode<StringImm> mean, [2]: ValueNode<StringImm> concat}
+#   9: @↻✓✗InterGNN.75576:[CNode]75694{[0]: ValueNode<FuncGraph> bool_.75541, [1]: [CNode]75693}
+#  10: @↻✓✗InterGNN.75576:[CNode]75696{[0]: ValueNode<Primitive> Switch, [1]: [CNode]75694, [2]: ValueNode<FuncGraph> ✓↻✓✗InterGNN.75695, [3]: ValueNode<FuncGraph> ✗↻✓✗InterGNN.75577}
+#  11: @↻✓✗InterGNN.75576:[CNode]75697{[0]: [CNode]75696}
+#  12: @↻✓✗InterGNN.75576:[CNode]75699{[0]: ValueNode<FuncGraph> ↓↻✓✗InterGNN.75698, [1]: [CNode]75697}
+#  13: @↻✓✗InterGNN.75576:[CNode]75700{[0]: ValueNode<Primitive> Depend, [1]: [CNode]75699, [2]: [CNode]75692}
+#  14: @↻✓✗InterGNN.75576:[CNode]75701{[0]: ValueNode<Primitive> Return, [1]: [CNode]75700}
+
+
+# [No.18] ✗↻✓✗InterGNN.75577
+# In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:112/                if self.mat2vec == 'concat':/
+funcgraph fg_75577[fg_75576](
+) {
+    %1 : $(↻✓✗InterGNN.75576):Tensor(F32)[4, 90, 64] = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%para57, %para58)    #(List[Tensor(F32)*2]ListShape[(4, 90, 64), (4, 90, 64)], I64NoShape) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:108/            for view_features in view_features_list:/#view_features
+
+#------------------------> 23
+    %2 = $(↻✓✗InterGNN.75576):FuncGraph::fg_75555(%1, "mean")    #(Tensor(F32)[4, 90, 64], StringNoShape)    # fg_75555=RL_module.75555 #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:109/                view_features = transform_matrix_vectors(/#view_features
+    %3 = FuncGraph::fg_75705(%2)    #(Undefined)    # fg_75705=Dense.75705 #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:115/                    f = self.tanh(self.w_gnn(view_features))/#[CNode]75706
+    %4 = DoSignaturePrimitive::S-Prim-Tanh{prim_type=1}[output_names=["y"], input_names=["x"]](%3)    #(Undefined) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:115/                    f = self.tanh(self.w_gnn(view_features))/#f
+    Primitive::Return{prim_type=1}(%4)    #(Undefined) #scope: Default/inter_gnn-InterGNN
+      # In file /workspace/RTGNN_mindspore/model/RTGNN_layers.py:112/                if self.mat2vec == 'concat':/#[CNode]75707
+}
+# order:
+#   1: @✗↻✓✗InterGNN.75577:[CNode]75706{[0]: ValueNode<FuncGraph> Dense.75705, [1]: view_features}
+#   2: @✗↻✓✗InterGNN.75577:f{[0]: ValueNode<DoSignaturePrimitive> S-Prim-Tanh, [1]: [CNode]75706}
+#   3: @✗↻✓✗InterGNN.75577:[CNode]75707{[0]: ValueNode<Primitive> Return, [1]: f}
+
+
+#===============================================================================
+# num of function graphs in stack: 18/24 (Ignored 6 internal frames).
